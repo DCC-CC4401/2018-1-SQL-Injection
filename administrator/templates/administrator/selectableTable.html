@@ -1,0 +1,23 @@
+<style>
+    table{
+        height: auto;
+    }
+</style>
+
+<table>
+    <tr>
+        <th></th>
+        {% for h in headers %}
+        <th>{{h}}</th>
+        {% endfor %}
+    </tr>
+    {% for d in data %}
+    <tr>
+        <th><input type="checkbox" value:""></th>
+        <td>{{d.id}}</td>
+        <td>{{d.article}}</td>
+        <td>{{d.lendingDate}}</td>
+        <td>{{d.returnDate}}</td>
+    </tr>
+    {% endfor %}
+</table>

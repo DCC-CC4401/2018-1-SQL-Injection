@@ -3,7 +3,26 @@
 {% block content %}
 
 <h1 class='h1'>{{ message }}</h1>
+<style>
+    
+</style>
 
 {% include 'administrator/calendar.html' %}
+
+<div class="row">
+    <div class="col-sm-6">
+        <h4>Prestamos</h4>
+        {% with data=pending headers=pendingHeaders %}
+        {% include 'administrator/selectableTable.html' %}
+        {% endwith %}
+    </div>
+    <div class="col-sm-6">
+        <h4>Ordenes</h4>
+        {% with data=orders headers=orderHeaders %}
+        {% include 'administrator/selectableTable.html' %}
+        {% endwith %}
+    </div>
+</div>
+
 
 {% endblock %}
