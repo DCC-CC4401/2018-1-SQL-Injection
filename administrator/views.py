@@ -8,11 +8,14 @@ def index(request):
     headers = ['id', 'Usuario', 'Fecha Pres','Fecha Sol']
     articles = [MockData(), MockData()]
 
+    salas = [MockSala(), MockSala(), MockSala(), MockSala()]
+
     context = {'message' : "Hello world!",
                 'orderHeaders': headers,
                 'pendingHeaders': headers,
                 'orders': articles,
-                'pending': articles
+                'pending': articles,
+                'salas': salas,
             } 
     template = loader.get_template('administrator/index.html')
     
@@ -24,3 +27,7 @@ class MockData():
     article = 'Article 1'
     lendingDate = '27/12/2018'
     returnDate = '27/12/2019'
+
+class MockSala():
+    id = 1
+    name = 'Sala #'

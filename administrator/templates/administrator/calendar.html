@@ -2,6 +2,21 @@
 
 {% block calendar %}
 
+<!-- custom style -->
+<style>
+    .calendar-control{
+        background:lightgray;
+        margin:0;
+        padding-top:5;
+        padding-bottom:5;
+    }
+    .calendar-filter{
+        margin:10px
+    }
+</style>
+    
+
+    
 <style>
 
 * {
@@ -159,6 +174,7 @@ table {
     border-color: grey;
 }
 </style>
+
 <div class="horario">
     <div style="height:346px;overflow:hidden">
     <div class="table-responsive"><table id="obj_7467903"><caption></caption>
@@ -222,7 +238,7 @@ table {
             <div id="dia_6" style="height: 308px; position:relative">
         </div></td>
     </tr>
-    </tbody>
+        </tbody>
     <col class="col0 first"><col class="col1"><col class="col2"><col class="col3"><col class="col4"><col class="col5"><col class="col6 last"></table></div>
     </div>
     
@@ -280,9 +296,33 @@ table {
     
     </script>
     
-    <label><input onclick="$$('div.Auxiliar').each(hide_tipo);" checked="checked" type="checkbox">Auxiliar</label>&nbsp; &nbsp; &nbsp;
-    <label><input onclick="$$('div.Ctedra').each(hide_tipo);" checked="checked" type="checkbox">Cátedra</label>&nbsp; &nbsp; &nbsp;
-    <label><input onclick="$$('div.Ctedra_Recuperativa').each(hide_tipo);" checked="checked" type="checkbox">Cátedra Recuperativa</label>&nbsp; &nbsp; &nbsp;
-    
+    <!--   Calendar Controls   -->
+    <div class='row calendar-control' >
+        <div class='col-sm-5'>
+            <a class='pull-right'>&lt&lt</a>
+        </div>
+        <div class='col-sm-1'>
+            <a class='pull-right'>&lt</a>
+        </div>
+        <div class='col-sm-1'>
+            <a class='pull-left'>&gt</a>
+        </div>
+        <div class='col-sm-5'>
+            <a class='pull-left'>&gt&gt</a>
+        </div>
+    </div> 
+
+
+    <!--   Calendar Filter by 'Salas'   -->
+    <div class='row calendar-filter'>
+        <div class='col-sm-1'></div>
+        {% for sala in salas %}
+        <div class='col-sm-2'>
+            <label><input type="checkbox">{{sala.name}}</label>
+        </div>
+        {% endfor %}
+        <div class='col-sm-1'></div>
     </div>
+    
+</div>
 {% endblock %}
