@@ -22,6 +22,27 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
+# Esta fue creada para visualizar el header y nada mas. Debe ser eliminada luego del testing.
+def index_beta(request):
+    # return HttpResponse("Hello, world. You're at the polls index.")
+
+    headers = ['id', 'Usuario', 'Fecha Pres', 'Fecha Sol']
+    articles = [MockData(), MockData()]
+
+    salas = [MockSala(), MockSala(), MockSala(), MockSala()]
+
+    context = {'message': "Hello world!",
+               'orderHeaders': headers,
+               'pendingHeaders': headers,
+               'orders': articles,
+               'pending': articles,
+               'salas': salas,
+               }
+    template = loader.get_template('base2.html')
+
+    return HttpResponse(template.render(context, request))
+
+
 class MockData():
     id = 1
     article = 'Article 1'
