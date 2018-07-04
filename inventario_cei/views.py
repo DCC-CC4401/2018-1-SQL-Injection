@@ -15,3 +15,23 @@ def index(request):
     template = loader.get_template('index.html')
 
     return HttpResponse(template.render(context, request))
+
+
+def objects(request):
+    objects = Object.objects.all()
+    context = {
+        'objects': objects,
+    }
+    template = loader.get_template('objects.html')
+
+    return HttpResponse(template.render(context, request))
+
+
+def spaces(request):
+    spaces = Space.objects.all()
+    context = {
+        'spaces': spaces,
+    }
+    template = loader.get_template('spaces.html')
+
+    return HttpResponse(template.render(context, request))

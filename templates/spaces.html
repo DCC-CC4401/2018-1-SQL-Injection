@@ -1,0 +1,35 @@
+{% extends "base2.html" %}
+
+{% block content %}
+    <section class="jumbotron text-center" style="padding-top: 40px; padding-bottom: 10px;">
+        <div class="container">
+            <h2 class="jumbotron-heading">Lista de Elementos</h2>
+            <p>
+                <a href="/objetos" class="btn btn-secondary my-2">Objetos</a>
+                <a href="/espacios" class="btn btn-success my-2">Espacios</a>
+            </p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="row">
+            {% for sp in spaces %}
+                <div class="col-md-3">
+                    <div class="card mb-3 box-shadow">
+                        <img class="card-img-top" src="{{ sp.image.url|slice:"14:" }}" alt="Imagen de {{ sp.name }}" style="height: 13rem;">
+                        <div class="card-body">
+                            <h4 class="card-title text-center">{{ sp.name }}</h4>
+                        </div>
+                        {% if  sp.condition == 'd'%}
+                            <div class="card-footer text-white bg-success"><h7>Disponible</h7></div>
+                        {% elif  sp.condition == 'p'%}
+                            <div class="card-footer text-white bg-info"><h7>En Préstamo</h7></div>
+                        {% elif  sp.condition == 'r'%}
+                            <div class="card-footer text-white bg-warning"><h7>En Reparación</h7></div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
