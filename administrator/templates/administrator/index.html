@@ -1,7 +1,45 @@
-{% extends "base.html" %}
+{% extends "base2.html" %}
 
 {% block content %}
 
-<h1 class='h1'>{{ message }}</h1>
+{% include 'administrator/calendar.html' %}
+<style>
+   
+</style>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="row border-dark">
+            <h4 class="col-sm-10" style='margin:0'>Prestamos</h4>
+
+            <div class="col-sm-2">
+                    <a>v</a>
+                    <a>x</a>
+            </div>
+        </div>
+        {% with data=pending headers=pendingHeaders %}
+        {% include 'administrator/selectableTable.html' %}
+        {% endwith %}
+    </div>
+    <div class="col-sm-6">
+        <div class="row border-dark">
+            <h4 class="col-sm-5" style='margin:0'>Pedidos</h4>
+            <div class="row col-sm-7">
+                <a class="col-sm-2">Todos</a>
+                <a class="col-sm-2">Vigentes</a>
+                <a class="col-sm-3">Caducados</a>
+                <a class="col-sm-2">Perdidos</a>
+                <div class="col-sm-3">
+                    <a>v</a>
+                    <a>x</a>
+                </div>
+                
+            </div>
+        </div>
+        {% with data=orders headers=orderHeaders %}
+        {% include 'administrator/selectableTable.html' %}
+        {% endwith %}
+    </div>
+</div>
 
 {% endblock %}

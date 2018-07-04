@@ -9,11 +9,13 @@ class Profile(models.Model):
     rut = models.CharField(max_length=12, primary_key=True)
     name = models.CharField(max_length=200)
     mail = models.EmailField()
-    photo = models.FileField()
+    photo = models.FileField(upload_to='inventario_cei/static/img/profile_pictures')
 
 
 class Admin(Profile):
-    pass
+
+    class Meta:
+        verbose_name_plural = "Administradores"
 
 
 class Client(Profile):
@@ -22,6 +24,9 @@ class Client(Profile):
         ('no', 'No Habilitado')
     )
     enable = models.CharField(max_length=2, choices=ENABLE)
+
+    class Meta:
+        verbose_name_plural = "Clientes"
 
 
 class Reserve(models.Model):
@@ -35,15 +40,22 @@ class Reserve(models.Model):
     state = models.CharField(max_length=1, choices=STATES)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    class Meta:
+        verbose_name_plural = "Reservas"
+
 
 class Item(models.Model):
     name = models.CharField(max_length=200)
-    image = models.FileField()
-    description = models.TextField()
-    reserves = models.SET(models.ForeignKey(Reserve, on_delete=models.CASCADE))
+    image = models.FileField(upload_to='inventario_cei/static/img/items')
+    description = models.TextField(default='')
+    reserves = models.SET(models.ForeignKey(Reserve, default=None, on_delete=models.CASCADE))
+
+    class Meta:
+        abstract = True
 
 
 class Object(Item):
+    image = models.FileField(upload_to='inventario_cei/static/img/items/objects') # Overriding parent class attribute
     CONDITIONS = (
         ('d', 'Disponible'),
         ('p', 'En Préstamo'),
@@ -52,8 +64,12 @@ class Object(Item):
     )
     condition = models.CharField(max_length=1, choices=CONDITIONS)
 
+    class Meta:
+        verbose_name_plural = "Objetos"
+
 
 class Space(Item):
+    image = models.FileField(upload_to='inventario_cei/static/img/items/spaces') # Overriding parent class attribute
     CONDITIONS = (
         ('d', 'Disponible'),
         ('p', 'En Préstamo'),
@@ -61,6 +77,9 @@ class Space(Item):
     )
     condition = models.CharField(max_length=1, choices=CONDITIONS)
     capacity = models.IntegerField()
+
+    class Meta:
+        verbose_name_plural = "Espacios"
 
 
 @receiver(post_save, sender=User)
