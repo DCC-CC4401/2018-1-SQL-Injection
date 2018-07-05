@@ -12,12 +12,14 @@
         {% endfor %}
     </tr>
     {% for d in data %}
+
     <tr>
         <th><input type="checkbox" value=""></th>
         <td>{{d.id}}</td>
-        <td>{{d.article}}</td>
-        <td>{{d.lendingDate}}</td>
-        <td>{{d.returnDate}}</td>
+        <td>{{d.user.name}}</td>
+        <td>{{d.space.name}}</td>
+        <td>{{d.start}}</td>
+        <td>{{d.finish}}</td>
     </tr>
     {% endfor %}
 </table>
