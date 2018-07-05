@@ -17,6 +17,10 @@ Clean database data
 
 `python manage.py sqlflush | python manage.py dbshell`
 
-load data
+backup database 
+
+`python manage.py dumpdata --exclude auth.permission --exclude contenttypes > db.json`
+
+load database backup
 
 `python manage.py loaddata db.json`
