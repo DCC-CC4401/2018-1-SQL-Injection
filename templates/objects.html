@@ -12,7 +12,7 @@
     </section>
 
     <div class="container">
-        <div class="row">
+        <div class=" card-group row">
             {% for obj in objects %}
                 <div class="col-md-3">
                     <div class="card mb-3 box-shadow">
@@ -34,4 +34,22 @@
             {% endfor %}
         </div>
     </div>
+
+    <script type="application/javascript">
+        $(document).ready(function(){
+            var max_height = 0;
+            var current_height;
+
+            $('.card-body').each(function (e) {
+                current_height = parseInt($(this).css('height'), 10);
+                if (current_height > max_height) max_height = current_height;
+            });
+
+            console.log(max_height);
+
+            $('.card-body').each(function (e) {
+                $(this).css('height', max_height);
+            });
+        });
+    </script>
 {% endblock %}
