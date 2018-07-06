@@ -39,7 +39,7 @@ def index_beta(request):
                'pending': articles,
                'salas': salas,
                }
-    template = loader.get_template('base2.html')
+    template = loader.get_template('base.html')
 
     return HttpResponse(template.render(context, request))
 

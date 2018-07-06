@@ -6,32 +6,31 @@ from .models import Object, Space
 
 
 def index(request):
-    objects = Object.objects.all()
-    spaces = Space.objects.all()
-    context = {
-        'objects': objects,
-        'spaces': spaces,
-    }
+    context = {}
     template = loader.get_template('index.html')
 
     return HttpResponse(template.render(context, request))
 
 
 def objects(request):
-    objects = Object.objects.all()
+    items = Object.objects.all()
     context = {
-        'objects': objects,
+        'items': items,
+        'objects_style': 'btn-success',
+        'spaces_style': 'btn-secondary',
     }
-    template = loader.get_template('objects.html')
+    template = loader.get_template('items_display.html')
 
     return HttpResponse(template.render(context, request))
 
 
 def spaces(request):
-    spaces = Space.objects.all()
+    items = Space.objects.all()
     context = {
-        'spaces': spaces,
+        'items': items,
+        'objects_style': 'btn-secondary',
+        'spaces_style': 'btn-success',
     }
-    template = loader.get_template('spaces.html')
+    template = loader.get_template('items_display.html')
 
     return HttpResponse(template.render(context, request))
