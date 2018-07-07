@@ -66,7 +66,6 @@ class Space(Item):
     class Meta:
         verbose_name_plural = "Espacios"
 
-
 class Reserve(models.Model):
     start = models.DateTimeField(auto_now_add=True)
     finish = models.DateTimeField()

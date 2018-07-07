@@ -6,46 +6,21 @@ from django.template import loader
 from inventario_cei.models import Reserve
 
 def index(request):
-    pendingHeaders = ['id', 'usuario', 'space','Fecha Pres', 'Fecha Sol']
-    pending = Reserve.objects.values('user','space','start','finish','id').distinct()
-
+    pendingHeaders = ['Id', 'Articulo', 'Usuario', 'Fecha de prestamo', 'Fecha de solicitud']
+    pending = Reserve.objects.all().values() 
     salas = [MockSala(), MockSala(), MockSala(), MockSala()]
 
+    pending = Reserve.objects.values_list('id', 'user__username','space__name','start','finish').distinct()
     context = {'message' : "Hello world!",
                 'orderHeaders': pendingHeaders,
                 'pendingHeaders': pendingHeaders,
-                'orders': pending,
-                'pending': pending,
+                'orders': list(map(list, pending)),
+                'pending': list(map(list, pending)),
                 'salas': salas,
             }
     template = loader.get_template('administrator/index.html')
     
     return HttpResponse(template.render(context, request))
-
-
-# Esta fue creada para visualizar el header y nada mas. Debe ser eliminada luego del testing.
-def index_beta(request):
-    # return HttpResponse("Hello, world. You're at the polls index.")
-
-    headers = ['id', 'Usuario', 'Fecha Pres', 'Fecha Sol']
-    
-    pending = Reserve.objects.all()
-    for a in pending:
-        a.user
-        a.space
-    articles = [MockSala(), MockSala(), MockSala(), MockSala()]
-
-    context = {'message': "Hello world!",
-               'orderHeaders': headers,
-               'pendingHeaders': headers,
-               'orders': articles,
-               'pending': pending,
-               'salas': salas,
-               }
-    template = loader.get_template('base2.html')
-
-    return HttpResponse(template.render(context, request))
-
 
 class MockData():
     id = 1
