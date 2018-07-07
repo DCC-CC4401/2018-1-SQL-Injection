@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'inventario_cei.apps.InventarioCeiConfig',
     'administrator.apps.AdministratorConfig',
+    'userprofile.apps.UserprofileConfig',
     'bootstrap3'
 ]
 
