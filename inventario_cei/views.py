@@ -6,6 +6,7 @@ import json
 
 from django.contrib.auth.models import User
 
+from inventario_cei.models import Item
 from inventario_cei.models import Space
 from inventario_cei.models import Client
 from inventario_cei.models import Reserve
@@ -20,10 +21,11 @@ from .testdata import createClient,createHalls,createReservations
 # The next methods are created to test de data base
 def testdata(request):
     return JsonResponse(
-            {"data": list(Space.objects.values('id','name').distinct()), 
+            {"items": list(Item.objects.values('id','name').distinct()), 
+            "spaces": list(Space.objects.values('id','item__name','item_id').distinct()), 
             "users":list(User.objects.values('id','username').distinct()),
             'profile':list(Profile.objects.values('name','user_id','rut').distinct()),
-            'reservations':list(Reserve.objects.values('space_id','user_id','start', 'finish').distinct())}
+            'reservations':list(Reserve.objects.values('item_id','user_id','start', 'finish').distinct())}
             ,safe=False)
     # return redirect('/administrator')
 

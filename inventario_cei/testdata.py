@@ -6,6 +6,7 @@ import json
 
 from django.contrib.auth.models import User
 
+from inventario_cei.models import Item
 from inventario_cei.models import Space
 from inventario_cei.models import Client
 from inventario_cei.models import Reserve
@@ -36,10 +37,10 @@ def createtestdata(request):
 
 def createReservations(clients, halls):
     data = []
-    for i in range(0, len(clients)):
+    for i in range(0, min(len(halls), len(clients))):
         r = Reserve()
         r.user = clients[i].user
-        r.space = halls[i]
+        r.item = halls[i].item
         r.start = datetime.now()
         r.finish = datetime.now() + timedelta(hours=9)
         r.state = 'p'
@@ -93,22 +94,22 @@ def createUser2(username, email, password):
     return u
 
 def createHalls():
-    data = [
-        {'name': 'sala01', 'capacity': 100, 'image':'https://www.hotelsaratoga.com/.imaging/stk/hTtGeneric/bootstrapGalleryImageBig/dms/monoHotel-Hotel-Saratoga/servicios/sala-conferencias/saladeconferencias/document/saladeconferencias.jpg'},
-        {'name': 'sala02', 'capacity': 100, 'image':'https://www.hotelsaratoga.com/.imaging/stk/hTtGeneric/bootstrapGalleryImageBig/dms/monoHotel-Hotel-Saratoga/servicios/sala-conferencias/saladeconferencias/document/saladeconferencias.jpg'},
-        {'name': 'sala03', 'capacity': 100, 'image':'https://www.hotelsaratoga.com/.imaging/stk/hTtGeneric/bootstrapGalleryImageBig/dms/monoHotel-Hotel-Saratoga/servicios/sala-conferencias/saladeconferencias/document/saladeconferencias.jpg'},
+    itemsdata = [
+        {'item': {'name': 'sala01'},
+        'space': {'capacity': 100, 'image':'https://www.hotelsaratoga.com/.imaging/stk/hTtGeneric/bootstrapGalleryImageBig/dms/monoHotel-Hotel-Saratoga/servicios/sala-conferencias/saladeconferencias/document/saladeconferencias.jpg'},
+        },
+        {'item': {'name': 'sala02'},
+        'space': {'capacity': 100, 'image':'https://www.hotelsaratoga.com/.imaging/stk/hTtGeneric/bootstrapGalleryImageBig/dms/monoHotel-Hotel-Saratoga/servicios/sala-conferencias/saladeconferencias/document/saladeconferencias.jpg'},
+        }
     ]
     datas = []
-    for d in data:
-        datas.append(createHall(Space, d))
+    for d in itemsdata:
+        
+        item = createObject(Item, d['item'])
+        d['space']['item_id'] = item.id
+        
+        datas.append(createObject(Space, d['space']))
     return datas
-
-def createHall(clazz, data):
-    instance = clazz()
-    for k,v in data.items(): 
-        setattr(instance, k, v)
-    instance.save()
-    return instance
 
 def createObject(clazz, data):
     instance = clazz()
