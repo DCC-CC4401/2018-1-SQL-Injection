@@ -99,9 +99,16 @@ def createHalls():
         {'name': 'sala03', 'capacity': 100, 'image':'https://www.hotelsaratoga.com/.imaging/stk/hTtGeneric/bootstrapGalleryImageBig/dms/monoHotel-Hotel-Saratoga/servicios/sala-conferencias/saladeconferencias/document/saladeconferencias.jpg'},
     ]
     datas = []
-    for d in data: 
-        datas.append(createObject(Space, d))
+    for d in data:
+        datas.append(createHall(Space, d))
     return datas
+
+def createHall(clazz, data):
+    instance = clazz()
+    for k,v in data.items(): 
+        setattr(instance, k, v)
+    instance.save()
+    return instance
 
 def createObject(clazz, data):
     instance = clazz()

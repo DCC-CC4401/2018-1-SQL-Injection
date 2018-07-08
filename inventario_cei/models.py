@@ -31,15 +31,17 @@ class Client(Profile):
 
 class Item(models.Model):
     name = models.CharField(max_length=200)
-    image = models.FileField(upload_to='inventario_cei/static/img/items')
+    # image = models.FileField(upload_to='inventario_cei/static/img/items')
     description = models.TextField(default='')
+
     # reserves = models.SET(models.ForeignKey(Reserve, default=None, on_delete=models.CASCADE))
-    
     class Meta:
-        abstract = True
+    #     abstract = True
+        verbose_name_plural = "Items"
 
 
-class Object(Item):
+class Object(models.Model):
+    item = models.OneToOneField(Item, null=True, on_delete=models.CASCADE)
     image = models.FileField(upload_to='inventario_cei/static/img/items/objects') # Overriding parent class attribute
     CONDITIONS = (
         ('d', 'Disponible'),
@@ -53,7 +55,8 @@ class Object(Item):
         verbose_name_plural = "Objetos"
 
 
-class Space(Item):
+class Space(models.Model):
+    item = models.OneToOneField(Item, null=True, on_delete=models.CASCADE)
     image = models.FileField(upload_to='inventario_cei/static/img/items/spaces') # Overriding parent class attribute
     CONDITIONS = (
         ('d', 'Disponible'),
@@ -79,8 +82,9 @@ class Reserve(models.Model):
     )
     state = models.CharField(max_length=1, choices=STATES)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    object = models.ForeignKey(Object, null=True, on_delete=models.CASCADE)
-    space = models.ForeignKey(Space, null=True, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, null=True, on_delete=models.CASCADE)
+    # object = models.ForeignKey(Object, null=True, on_delete=models.CASCADE)
+    # space = models.ForeignKey(Space, null=True, on_delete=models.CASCADE)
 
 
     class Meta:
