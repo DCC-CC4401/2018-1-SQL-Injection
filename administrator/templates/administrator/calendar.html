@@ -14,9 +14,8 @@
         margin:10px
     }
 </style>
-    
 
-    
+<!-- calendar style -->
 <style>
 
 * {
@@ -63,26 +62,11 @@ table {
     border-spacing: 2px;
     border-color: grey;
 }
-* {
-    font-family: Arial,Helvetica,sans-serif;
-    font-size: 11px;
-    padding: 0;
-    margin: 0;
-}
 
-
-
-html {
-    font-family: sans-serif;
-    -ms-text-size-adjust: 100%;
-    -webkit-text-size-adjust: 100%;
-}
 html {
     font-size: 10px;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-}
-html {
     font-family: sans-serif;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
 }
@@ -206,37 +190,23 @@ table {
         <div class="hora" style="top:242px; height:21px;">19:00</div>
         <div class="hora" style="top:264px; height:21px;">20:00</div>
         <div class="hora" style="top:286px; height:21px;">21:00</div>
-        <div id="line" class="reloj" style="top: 301px;"><span>21:38</span></div>   </th>
+        <div id="line" class="reloj" style="top: 301px;"><span>21:38</span></div>   
+    </th>
+        {% for i in '123456'|make_list %}
         <td class="dia " style="">
-            <div id="dia_1" style="height: 308px; position:relative">
-            <div class="bloque Ctedra c251233 " style="top:181.5px;height:32px;min-height:32px;left:0px;margin-right:0px;background-color:#ffc4a0;z-index:2"><a href="https://www.u-cursos.cl/ingenieria/2018/1/CC7910/1/">CC7910-1</a> Cátedra &nbsp; B103 &nbsp; 25/06/2018 &nbsp;16:15 - 17:45</div>
-            <div class="bloque Ctedra_Recuperativa c261717 " style="top:182.5px;height:43px;min-height:43px;left:25px;margin-right:0px;background-color:#fff8a8;z-index:3"><a href="https://www.u-cursos.cl/ingenieria/2018/1/EP3203/1/">EP3203-1</a> Cátedra Recuperativa &nbsp; B02 &nbsp; 25/06/2018 &nbsp;16:15 - 18:15</div>
-        </div></td>
-        <td class="dia " style="">
-            <div id="dia_2" style="height: 308px; position:relative">
-            <div class="bloque Ctedra c247259 " style="top:49.5px;height:32px;min-height:32px;left:0px;margin-right:0px;background-color:#84e2f0;z-index:2"><a href="https://www.u-cursos.cl/ingenieria/2018/1/CC4101/1/">CC4101-1</a> Cátedra &nbsp; B211 &nbsp; 26/06/2018 &nbsp;10:15 - 11:45</div>
-            <div class="bloque Ctedra c247269 " style="top:181.5px;height:32px;min-height:32px;left:0px;margin-right:0px;background-color:#a8f0b0;z-index:3"><a href="https://www.u-cursos.cl/ingenieria/2018/1/CC4401/1/">CC4401-1</a> Cátedra &nbsp; B211 &nbsp; 26/06/2018 &nbsp;16:15 - 17:45</div>
-            <div class="bloque Ctedra c261717 " style="top:220px;height:43px;min-height:43px;left:0px;margin-right:0px;background-color:#fff8a8;z-index:4"><a href="https://www.u-cursos.cl/ingenieria/2018/1/EP3203/1/">EP3203-1</a> Cátedra &nbsp; B001 &nbsp; 26/06/2018 &nbsp;18:00 - 20:00</div>
-        </div></td>
-        <td class="dia " style="">
-            <div id="dia_3" style="height: 308px; position:relative">
-            <div class="bloque Ctedra_Recuperativa c261717 " style="top:126.5px;height:43px;min-height:43px;left:0px;margin-right:0px;background-color:#fff8a8;z-index:2"><a href="https://www.u-cursos.cl/ingenieria/2018/1/EP3203/1/">EP3203-1</a> Cátedra Recuperativa &nbsp; B02 &nbsp; 27/06/2018 &nbsp;13:45 - 15:45</div>
-            <div class="bloque Ctedra c251233 " style="top:181.5px;height:32px;min-height:32px;left:0px;margin-right:0px;background-color:#ffc4a0;z-index:3"><a href="https://www.u-cursos.cl/ingenieria/2018/1/CC7910/1/">CC7910-1</a> Cátedra &nbsp; Sala Laboratorio de Computación DCC, Piso 3 &nbsp; 27/06/2018 &nbsp;16:15 - 17:45</div>
-            <div class="bloque Auxiliar c247269 " style="top:220px;height:32px;min-height:32px;left:0px;margin-right:0px;background-color:#a8f0b0;z-index:4"><a href="https://www.u-cursos.cl/ingenieria/2018/1/CC4401/1/">CC4401-1</a> Auxiliar &nbsp; B211 &nbsp; 27/06/2018 &nbsp;18:00 - 19:30</div>
-        <div id="circle" class="circle" style="top: 301px;"></div></div></td>
-        <td class="dia " style="">
-            <div id="dia_4" style="height: 308px; position:relative">
-            <div class="bloque Ctedra c247259 " style="top:49.5px;height:32px;min-height:32px;left:0px;margin-right:0px;background-color:#84e2f0;z-index:2"><a href="https://www.u-cursos.cl/ingenieria/2018/1/CC4101/1/">CC4101-1</a> Cátedra &nbsp; B211 &nbsp; 28/06/2018 &nbsp;10:15 - 11:45</div>
-            <div class="bloque Ctedra c247269 " style="top:181.5px;height:32px;min-height:32px;left:0px;margin-right:0px;background-color:#a8f0b0;z-index:3"><a href="https://www.u-cursos.cl/ingenieria/2018/1/CC4401/1/">CC4401-1</a> Cátedra &nbsp; B211 &nbsp; 28/06/2018 &nbsp;16:15 - 17:45</div>
-            <div class="bloque Ctedra c261717 " style="top:220px;height:43px;min-height:43px;left:0px;margin-right:0px;background-color:#fff8a8;z-index:4"><a href="https://www.u-cursos.cl/ingenieria/2018/1/EP3203/1/">EP3203-1</a> Cátedra &nbsp; B001 &nbsp; 28/06/2018 &nbsp;18:00 - 20:00</div>
-        </div></td>
-        <td class="dia " style="">
-            <div id="dia_5" style="height: 308px; position:relative">
-            <div class="bloque Auxiliar c247259 " style="top:143px;height:32px;min-height:32px;left:0px;margin-right:0px;background-color:#84e2f0;z-index:2"><a href="https://www.u-cursos.cl/ingenieria/2018/1/CC4101/1/">CC4101-1</a> Auxiliar &nbsp; B203 &nbsp; 29/06/2018 &nbsp;14:30 - 16:00</div>
-        </div></td>
-        <td class="dia " style="">
-            <div id="dia_6" style="height: 308px; position:relative">
-        </div></td>
+            <div id="dia_{{i}}" style="height: 308px; position:relative">
+                {% for d in weekReserves %}
+                    <div class="bloque Ctedra c251233 " style="top:181.5px;height:32px;min-height:32px;left:0px;margin-right:0px;background-color:#ffc4a0;z-index:2">
+                        <a href="https://www.u-cursos.cl/ingenieria/2018/1/CC7910/1/">{{d.space__name}}</a> 
+                        <div>{{ d.start|date:'H:i' }} - {{ d.finish|date:'H:i' }}</div>
+                        
+                    </div>
+                {% endfor %}
+                <!-- <div class="bloque Ctedra_Recuperativa c261717 " style="top:182.5px;height:43px;min-height:43px;left:25px;margin-right:0px;background-color:#fff8a8;z-index:3">
+                    <a href="https://www.u-cursos.cl/ingenieria/2018/1/EP3203/1/">EP3203-1</a> Cátedra Recuperativa &nbsp; B02 &nbsp; 25/06/2018 &nbsp;16:15 - 18:15</div> -->
+            </div>
+        </td>
+        {% endfor %}
     </tr>
         </tbody>
     <col class="col0 first"><col class="col1"><col class="col2"><col class="col3"><col class="col4"><col class="col5"><col class="col6 last"></table></div>

@@ -1,13 +1,20 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
-
+import datetime
 
 from inventario_cei.models import Reserve
 
 def index(request):
     
     rooms = [MockSala(), MockSala(), MockSala(), MockSala()]
+
+    # all week reserves 
+    today = datetime.datetime.today()
+    start_week = today - datetime.timedelta(today.weekday())
+    end_week = start_week + datetime.timedelta(7)
+    weekReserves = Reserve.objects.filter(start__range=[start_week, end_week]).values(
+        'id', 'user__username','space__name','start','finish').order_by('-created')
 
     # Pending reserves
     pendingHeaders = ['Id', 'Usuario', 'Articulo', 'Fecha de prestamo', 'Fecha de solicitud']
@@ -20,6 +27,7 @@ def index(request):
         'id', 'user__username','space__name','start','finish','state').order_by('-updated')
 
     context = {'message' : "Hello world!",
+                'weekReserves':weekReserves,
                 'pendingHeaders': pendingHeaders,
                 'pendings': list(pending),
                 'lendingHeaders': lendingHeaders,
