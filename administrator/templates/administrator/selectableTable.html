@@ -13,7 +13,7 @@
     </tr>
     {% for d in data %}
     <tr>
-        <th><input type="checkbox" value="{{d.0}}"></th>
+        <th><input type="checkbox" name='pre-selected' value="{{d.0}}"></th>
         {% for v in d %}
             <td>{{v}}</td>
         {% endfor %}

@@ -310,13 +310,12 @@ table {
         <div class='col-sm-5'>
             <a class='pull-left'>&gt&gt</a>
         </div>
-    </div> 
-
+    </div>
 
     <!--   Calendar Filter by 'Salas'   -->
     <div class='row calendar-filter'>
         <div class='col-sm-1'></div>
-        {% for sala in salas %}
+        {% for sala in rooms %}
         <div class='col-sm-2'>
             <label><input type="checkbox">{{sala.name}}</label>
         </div>
