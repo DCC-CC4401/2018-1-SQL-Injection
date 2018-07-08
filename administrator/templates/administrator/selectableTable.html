@@ -13,11 +13,11 @@
     </tr>
     {% for d in data %}
     <tr class="res-lending">
-        <th><input type="checkbox" name='pre-selected' value="{{d.id}}"></th>
+        <th><input type="checkbox" name='pre-selected' value="{{d.item__reserve__id}}"></th>
         {% for k,v in d.items %}
-            {% if k == "start" or k == 'finish'%}
+            {% if k == "item__reserve__start" or k == 'item__reserve__finish'%}
                 <td class='{{k}}'>{{ v|date:'Y-m-d H:i' }}</td>
-            {% elif k == 'state'%}
+            {% elif k == 'condition'%}
                 <td hidden class='{{k}}'>{{v}}</td>
             {% else %}
                 <td class='{{k}}'>{{v}}</td>

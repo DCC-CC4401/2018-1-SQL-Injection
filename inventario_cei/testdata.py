@@ -8,32 +8,13 @@ from django.contrib.auth.models import User
 
 from inventario_cei.models import Item
 from inventario_cei.models import Space
+from inventario_cei.models import Object
 from inventario_cei.models import Client
 from inventario_cei.models import Reserve
 from inventario_cei.models import Profile
 # from models import User
 
 # Create your views here.
-
-# TODO: delete this method for production
-# The next methods are created to test de data base
-def testdata(request):
-    data = Space.objects.values('name').distinct()
-    users = User.objects.values('username','id').distinct()
-
-    
-    return JsonResponse({"data": list(data), 
-                            "users":list(users),
-                            'profile':list(Profile.objects.values('name','user_id','rut').distinct())}
-                        ,safe=False)
-    # return redirect('/administrator')
-
-
-def createtestdata(request):
-    clients = createClient()
-    halls = createHalls()
-    reservations = createReservations(clients, halls)
-    return JsonResponse({'result':'1'}, safe=False)
 
 def createReservations(clients, halls):
     data = []
@@ -109,6 +90,30 @@ def createHalls():
         d['space']['item_id'] = item.id
         
         datas.append(createObject(Space, d['space']))
+    return datas
+
+def createObjects():
+    itemsdata = [
+        {'item': {'name': 'escoba2'},
+        'object': {'condition': 'l', 'image':'https://www.hotelsaratoga.com/.imaging/stk/hTtGeneric/bootstrapGalleryImageBig/dms/monoHotel-Hotel-Saratoga/servicios/sala-conferencias/saladeconferencias/document/saladeconferencias.jpg'},
+        },
+        {'item': {'name': 'saxofon'},
+        'object': {'condition': 'p', 'image':'https://www.hotelsaratoga.com/.imaging/stk/hTtGeneric/bootstrapGalleryImageBig/dms/monoHotel-Hotel-Saratoga/servicios/sala-conferencias/saladeconferencias/document/saladeconferencias.jpg'},
+        },
+        {'item': {'name': 'microfono'},
+        'object': {'condition': 'd', 'image':'https://www.hotelsaratoga.com/.imaging/stk/hTtGeneric/bootstrapGalleryImageBig/dms/monoHotel-Hotel-Saratoga/servicios/sala-conferencias/saladeconferencias/document/saladeconferencias.jpg'},
+        },
+        {'item': {'name': 'escoba1'},
+        'object': {'condition': 'r', 'image':'https://www.hotelsaratoga.com/.imaging/stk/hTtGeneric/bootstrapGalleryImageBig/dms/monoHotel-Hotel-Saratoga/servicios/sala-conferencias/saladeconferencias/document/saladeconferencias.jpg'},
+        }
+    ]
+    datas = []
+    for d in itemsdata:
+        
+        item = createObject(Item, d['item'])
+        d['object']['item_id'] = item.id
+        
+        datas.append(createObject(Object, d['object']))
     return datas
 
 def createObject(clazz, data):

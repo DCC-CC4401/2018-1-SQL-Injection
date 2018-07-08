@@ -68,7 +68,7 @@
         $(el).addClass('filter-selected')
     }
     function getFilteredElements(){
-        return $('#lendings .res-lending td.finish')
+        return $('#lendings tr.res-lending td.item__reserve__finish')
     }
     function clearFilters(){
         enlightSelectedFilter(this.event.target)
@@ -95,6 +95,7 @@
             var el = $(e);
             var parent = el.parent('tr');
             parent.hide();
+            console.log(el.text())
             if (Date.parse(el.text()) < Date.now()){
                 parent.show()
             }
@@ -102,7 +103,7 @@
     }
     function filterLost(){
         enlightSelectedFilter(this.event.target)
-        $('#lendings .res-lending td.state').each(function(i,e){
+        $('#lendings .res-lending td.condition').each(function(i,e){
             var el = $(e);
             var parent = el.parent('tr');
             parent.hide()
