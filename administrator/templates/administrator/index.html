@@ -29,23 +29,23 @@
                     <button class="float-right" name="accept"><img class="icon-actions" src="{% static "/icons8-ok-48.png" %}" class="img-responsive"></button>
                 </div>
             </div>
-            {% with data=pending headers=pendingHeaders %}
+            {% with data=pendings headers=pendingHeaders %}
             {% include 'administrator/selectableTable.html' %}
             {% endwith %}
         </form>
     </div>
-    <div class="col-sm-6">
+    <div id="lendings" class="col-sm-6">
         <div class="border-dark">
             <h4 class="col-sm-5" style='margin:0'>Pedidos</h4>
         </div>
-        <form action="postlending" method='post'>
+        <!-- <form action="postlending" method='post'> -->
             {% csrf_token %}
             <div class="border-dark">
                 <div class="row">
-                    <a class="col-sm">Todos</a>
-                    <a class="col-sm">Vigentes</a>
-                    <a class="col-sm">Caducados</a>
-                    <a class="col-sm">Perdidos</a>
+                    <a class="col-sm" onclick="clearFilters()" href="#">Todos</a>
+                    <a class="col-sm" onclick="filterOnTime()" href="#">Vigentes</a>
+                    <a class="col-sm" onclick="filterOutOfTime()" href="#">Caducados</a>
+                    <a class="col-sm" onclick="filterLost()" href="#">Perdidos</a>
                     <div class="col-sm">
                         <button class="float-right" name="negate"><img class="icon-actions" src="{% static "/icons8-cancel-48.png" %}" class="img-responsive"></a>
                         <button class="float-right" name="accept"><img class="icon-actions" src="{% static "/icons8-ok-48.png" %}" class="img-responsive"></a>
@@ -56,8 +56,61 @@
             {% with data=lendings headers=lendingHeaders %}
             {% include 'administrator/selectableTable.html' %}
             {% endwith %}
-        </form>
+        <!-- </form> -->
     </div>
 </div>
+<style>
 
+</style>
+<script>
+    function enlightSelectedFilter(el){
+        $('.filter-selected').removeClass('filter-selected')
+        $(el).addClass('filter-selected')
+    }
+    function getFilteredElements(){
+        return $('#lendings .res-lending td.finish')
+    }
+    function clearFilters(){
+        enlightSelectedFilter(this.event.target)
+        getFilteredElements().each(function(i,e){
+            $(e).parent('tr').show()
+            // console.log(Date.parse($(e).show()))
+        })
+    }
+
+    function filterOnTime(){
+        enlightSelectedFilter(this.event.target)
+        getFilteredElements().each(function(i,e){
+            var el = $(e);
+            var parent = el.parent('tr');
+            parent.hide();
+            if (Date.parse(el.text()) > Date.now()){
+                parent.show()
+            }
+        })
+    }
+    function filterOutOfTime(){
+        enlightSelectedFilter(this.event.target)
+        getFilteredElements().each(function(i,e){
+            var el = $(e);
+            var parent = el.parent('tr');
+            parent.hide();
+            if (Date.parse(el.text()) < Date.now()){
+                parent.show()
+            }
+        })
+    }
+    function filterLost(){
+        enlightSelectedFilter(this.event.target)
+        $('#lendings .res-lending td.state').each(function(i,e){
+            var el = $(e);
+            var parent = el.parent('tr');
+            parent.hide()
+            console.log(e, el.text())
+            if(el.text() == 'p') {
+                parent.show()
+            }
+        })
+    }
+</script>
 {% endblock %}

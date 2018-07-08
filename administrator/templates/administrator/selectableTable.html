@@ -12,11 +12,18 @@
         {% endfor %}
     </tr>
     {% for d in data %}
-    <tr>
-        <th><input type="checkbox" name='pre-selected' value="{{d.0}}"></th>
-        {% for v in d %}
-            <td>{{v}}</td>
+    <tr class="res-lending">
+        <th><input type="checkbox" name='pre-selected' ></th>
+        {% for k,v in d.items %}
+            {% if k == "start" or k == 'finish'%}
+                <td class='{{k}}'>{{ v|date:'Y-m-d H:i' }}</td>
+            {% elif k == 'state'%}
+                <td hidden class='{{k}}'>{{v}}</td>
+            {% else %}
+                <td class='{{k}}'>{{v}}</td>
+            {% endif %}
         {% endfor %}
+        
     </tr>
     {% endfor %}
 </table>

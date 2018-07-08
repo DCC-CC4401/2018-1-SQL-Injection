@@ -6,4 +6,5 @@ urlpatterns = [
     # single menu
     path('', views.index, name='index'),
     path('postpending', views.postPending, name='postPending'),
+    path('postlending', views.postLending, name='postLending'),
 ]
