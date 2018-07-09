@@ -7,11 +7,15 @@
         margin:10px
     }
     .icon-actions {
-        width: 13pt
+        width: 19pt;
+        cursor: pointer;
     }
-    .icon-car {
-        background-image: url("{% static '/icons8-cancel-48.png' %}");
+    .button-transparent {
+        /* background-image: url("{% static '/icons8-cancel-48.png' %}"); */
         background-position: center center;
+        border: none;
+        background: none;
+        margin: 2px
     }
     .selectable-actions{
         align-content: right;
@@ -34,10 +38,10 @@
             <!--    checkbox buttons    -->
             <div class="row border-dark">
                 <div class="col-sm">
-                    <button class="float-right" name="negate">
-                        <img class="icon-actions img-responsive" src="{% static "/icons8-cancel-48.png" %}" ></button>
-                    <button class="float-right" name="accept">
-                        <img class="icon-actions img-responsive" src="{% static "/icons8-ok-48.png" %}" ></button>
+                    <button class="float-right button-transparent" name="negate" >
+                        <img class="icon-actions img-responsive" src="{% static "/icons8-cancel-48.png" %}" title="Denegar"></button>
+                    <button class="float-right button-transparent" name="accept" >
+                        <img class="icon-actions img-responsive" src="{% static "/icons8-ok-48.png" %}" title="Aceptar"></button>
                 </div>
             </div>
 
@@ -57,13 +61,19 @@
             {% csrf_token %}
             <div class="border-dark">
                 <div class="row">
-                    <a class="col-sm" onclick="clearFilters()" href="#">Todos</a>
-                    <a class="col-sm" onclick="filterOnTime()" href="#">Vigentes</a>
-                    <a class="col-sm" onclick="filterOutOfTime()" href="#">Caducados</a>
-                    <a class="col-sm" onclick="filterLost()" href="#">Perdidos</a>
+                    <ul class="list-inline">
+                            <li class="list-inline-item"><a class="col-sm" onclick="clearFilters()" href="#">Todos</a></li>
+                            <li class="list-inline-item"><a class="col-sm" onclick="filterOnTime()" href="#">Vigentes</a></li>
+                            <li class="list-inline-item"><a class="col-sm" onclick="filterOutOfTime()" href="#">Caducados</a></li>
+                            <li class="list-inline-item"><a class="col-sm" onclick="filterLost()" href="#">Perdidos</a></li>
+                    </ul>
+                    
+                    <!--    checkbox buttons    -->
                     <div class="col-sm">
-                        <button class="float-right" name="negate"><img class="icon-actions" src="{% static "/icons8-cancel-48.png" %}" class="img-responsive"></a>
-                        <button class="float-right" name="accept"><img class="icon-actions" src="{% static "/icons8-ok-48.png" %}" class="img-responsive"></a>
+                        <button class="float-right button-transparent" name="negate" >
+                            <img class="icon-actions img-responsive" src="{% static "/icons8-cancel-48.png" %}" title="Denegar"></button>
+                        <button class="float-right button-transparent" name="accept" >
+                            <img class="icon-actions img-responsive" src="{% static "/icons8-ok-48.png" %}" title="Aceptar"></button>
                     </div>
                 </div>
             </div>
