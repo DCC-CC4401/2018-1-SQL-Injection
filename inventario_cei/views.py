@@ -41,7 +41,9 @@ def handleLogin(request):
         login(request, user)
         return HttpResponseRedirect('/userprofile')
     else:
-        return HttpResponseRedirect('/cei/login')
+        context = {'error': 'Credenciales Invalidas'}
+        template = loader.get_template('login.html')
+        return HttpResponse(template.render(context, request))
         
 
 def handleLogout(request):
