@@ -21,7 +21,10 @@ from .testdata import createClient,createHalls,createReservations,createObjects
 
 
 # login
-def login(request):
+def handleLogin(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('/userprofile')
+
     context = {}
     if request.method == 'GET':
         template = loader.get_template('login.html')
