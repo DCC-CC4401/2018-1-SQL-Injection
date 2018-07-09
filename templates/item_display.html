@@ -14,25 +14,60 @@
     <div class="container">
         <div class="row justify-content-center mb-4">
             <div class="col-12">
-                <form class="form-inline" method="get" action="/objetos/">
-                    <div class="col-2"></div>
-                    <div class="col-8"><input placeholder="Ej: Parlante" name='search_terms' type="search"
-                                              class="form-control" style="width:100%"></div>
-                    <div class="col-2">
-                        <button type="submit">Buscar</button>
+                <form method="get" action="/objetos/">
+                    <div class="form-group row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-7">
+                            <input placeholder="Ej: Parlante" name='search_terms' type="search"
+                                   class="form-control" style="width:100%">
+                        </div>
+                        <div class="col-sm-1">
+                            <button type="submit" class="btn btn-primary">Buscar</button>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" onclick="activar_parametros()" class="btn btn-secondary" role="button"
+                                    aria-pressed="true">Búsqueda Avanzada
+                            </button>
+                        </div>
                     </div>
-
+                    <div id="busqueda_avanzada" style="display: none;margin-left: 15%;margin-right: 15%"
+                         class="border p-3 shadow mb-4">
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Id:</label>
+                            <input name= 'id' type="number" class="form-control" id="exampleFormControlInput1" placeholder="Ej: 42">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Fecha Inicial:</label>
+                            <input type="date" class="form-control" id="exampleFormControlInput1">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Fecha Final:</label>
+                            <input type="date" class="form-control" id="exampleFormControlInput1">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">Estado</label>
+                            <select name='estado' class="form-control" id="exampleFormControlSelect1">
+                                <option value='t'>Todos</option>
+                                <option value='d'>Disponible</option>
+                                <option value='p'>En Préstamo</option>
+                                <option value='r'>En Reparación</option>
+                                <option value='l'>Perdido</option>
+                            </select>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <div style="margin-bottom: 3%; margin-left: 5%">
-        {% if made_search %}
-            <h3>Resultado de la busqueda: "{{ search_terms }}"</h3>
-        {% else %}
-            <h3>Todos los Items</h3>
-        {% endif %}
+    <div class="container" style="margin-bottom: 7%; margin-left: 5%">
+        <div style="float: left;">
+            {% if made_search %}
+                <h3>Resultado de la busqueda: "{{ search_terms }}"</h3>
+            {% else %}
+                <h3>Todos los Items</h3>
+            {% endif %}
+        </div>
     </div>
 
     <div class="container">
@@ -84,5 +119,16 @@
                 $(this).css('height', max_height);
             });
         });
+    </script>
+
+    <script>
+        function activar_parametros() {
+            var estilo = document.getElementById('busqueda_avanzada').style.display;
+            if (estilo === '') {
+                document.getElementById('busqueda_avanzada').style.display = 'none';
+            } else {
+                document.getElementById('busqueda_avanzada').style.display = '';
+            }
+        }
     </script>
 {% endblock %}
