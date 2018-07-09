@@ -13,14 +13,21 @@ def index(request):
 
 
 def objects(request):
-    items = Object.objects.all()
+    search_terms = request.GET.get('search_terms')
+    made_search = False
+    if search_terms is None:
+        items = Object.objects.all()
+    else:
+        items = Object.objects.filter(name__icontains=search_terms)
+        made_search = True
     context = {
+        'search_terms' : search_terms,
+        'made_search': made_search,
         'items': items,
         'objects_style': 'btn-success',
         'spaces_style': 'btn-secondary',
     }
-    template = loader.get_template('items_display.html')
-
+    template = loader.get_template('item_display.html')
     return HttpResponse(template.render(context, request))
 
 
@@ -31,19 +38,6 @@ def spaces(request):
         'objects_style': 'btn-secondary',
         'spaces_style': 'btn-success',
     }
-    template = loader.get_template('items_display.html')
-
-    return HttpResponse(template.render(context, request))
-
-
-def search_item(request):
-    search_terms = request.GET.get('search_terms')
-    items = Object.objects.filter(name__icontains=search_terms)
-    context = {
-        'items': items,
-        'objects_style': 'btn-success',
-        'spaces_style': 'btn-secondary',
-    }
-    template = loader.get_template('landing_user.html')
+    template = loader.get_template('item_display.html')
 
     return HttpResponse(template.render(context, request))

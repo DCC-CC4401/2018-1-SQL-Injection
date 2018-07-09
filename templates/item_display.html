@@ -11,10 +11,29 @@
         </div>
     </section>
 
-    <form class="form-inline" method="get" action="/searchItem/">
-        <input placeholder="Ej: Parlante" aria-label='Search' id='search_terms' type="search" class="form-control">
-        <button type="submit"></button>
-    </form>
+    <div class="container">
+        <div class="row justify-content-center mb-4">
+            <div class="col-12">
+                <form class="form-inline" method="get" action="/objetos/">
+                    <div class="col-2"></div>
+                    <div class="col-8"><input placeholder="Ej: Parlante" name='search_terms' type="search"
+                                              class="form-control" style="width:100%"></div>
+                    <div class="col-2">
+                        <button type="submit">Buscar</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-bottom: 3%; margin-left: 5%">
+        {% if made_search %}
+            <h3>Resultado de la busqueda: "{{ search_terms }}"</h3>
+        {% else %}
+            <h3>Todos los Items</h3>
+        {% endif %}
+    </div>
 
     <div class="container">
         <div class=" card-group row">
