@@ -73,7 +73,7 @@ class Reserve(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
-    start = models.DateTimeField(auto_now_add=True)
+    start = models.DateTimeField()
     finish = models.DateTimeField()
     STATES = (
         ('a', 'Aceptada'),

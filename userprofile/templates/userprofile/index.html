@@ -40,8 +40,8 @@
 
     <div>
         <div style='float: left;'>
-            <button type="button" onclick="alert('ver resevas')">Reservas</button>
-            <button type="button" onclick="alert('ver préstamos')">Préstamos</button>
+            <button type="button" onclick="Hide_prestamo()">Reservas</button>
+            <button type="button" onclick="Hide_reserva()">Préstamos</button>
         </div>
         <div style='float: right;'>
             <i class="fa fa-trash"></i>
@@ -50,7 +50,7 @@
     </div>
     <div style="clear: both;"></div>
 
-    <div class="row">
+    <div class="row" id="reservas">
             <!-- List group -->
             <form id="delete-form" method="post" action="{% url 'delete' %}">
                 <div class="list-group">
@@ -64,7 +64,7 @@
                 {% for l in list %}
                 <a class="list-group-item list-group-item-action" data-toggle="list" href="#{{ l.id }}" role="tab">
                     {{ l.item.name }}
-                    <p style="float: right;">{{ l.get_state_display }}</p>
+                    <p class="badge badge-secondary" style="float: right;">{{ l.get_state_display }}</p>
                     <div style="clear: both;"></div>
                 </a>
 
@@ -78,12 +78,27 @@
                     <h2>{{ l.item.name }}</h2>
                     <h5>{{ l.get_state_display }}</h5>
                     <p>{{ l.item.description }}</p>
-                    <p>Fecha de entrega: {{ l.finish }}</p>
+                    <P>Fecha de inicio: {{ l.start }}</P>
+                    <p>Fecha de término: {{ l.finish }}</p>
+                    <a href="{% url 'administrator' %}">Ver más detalles</a>
                 </div>
                 {% endfor %}
             </div>
+    </div>
+    <div class="row" id="prestamos">
 
     </div>
+
+    <script>
+        function Hide_prestamo() {
+            document.getElementById('prestamos').style.display = 'none';
+            document.getElementById('reservas').style.display = '';
+        }
+        function Hide_reserva() {
+            document.getElementById('reservas').style.display = 'none';
+            document.getElementById('prestamos').style.display = '';
+        }
+    </script>
 
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
