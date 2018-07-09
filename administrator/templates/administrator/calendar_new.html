@@ -31,7 +31,7 @@
 	.calendar-label {
 		display: inline;
     padding: .2em .6em .3em;
-    font-size: 75%;
+    font-size: 100%;
     font-weight: 700;
     line-height: 1;
     color: #fff;
@@ -42,6 +42,13 @@
 		box-sizing: border-box;
 	}
 
+
+/* $(".calendar-categories").insertAfter(".calendar-events") */
+
+	.calendar-events{
+		margin-bottom: 20px;
+	}
+
 	.calendar .event-name{
 		font-size: 1rem;
 	}
@@ -49,38 +56,24 @@
 </style>
 <script>
 $(document).ready(function(){
-
+	
+	// configure calendar
   moment.locale('es');
 	var now = moment();
 	var events = [
+		// Do not delete the commens inside
 		// {% for d in weekReserves %}
 		{
-	    // start: now.startOf('week').add(33, 'h').format('X'),
-	    // end: now.startOf('week').add(35, 'h').format('X'),
-			start: moment("{{ d.item__reserve__start|date:'Y-m-d H:i' }}").format('X'),
+	    start: moment("{{ d.item__reserve__start|date:'Y-m-d H:i' }}").format('X'),
 			end: moment("{{ d.item__reserve__finish|date:'Y-m-d H:i' }}").format('X'),
 	    title: '{{d.item__name}}',
-	    content: "{{d.item__name}} <br> <p>{{ d.item__reserve__start|date:'H:i' }} - {{ d.item__reserve__finish|date:'H:i' }}</p>",
+			content: "<span>{{d.item__reserve__user__profile__name}}</span> <br/><span>RUT: {{d.item__reserve__user__profile__rut}}</span> <br/><p>{{d.description}}<p/>",
 	    category:'{{d.item__name}}'
 		},
 		// {% endfor %}
-		// {
-	  //   start: now.startOf('week').add(33, 'h').format('X'),
-	  //   end: now.startOf('week').add(35, 'h').format('X'),
-	  //   title: '2',
-	  //   content: 'Hello World! <br> <p>Foo Bar</p>',
-	  //   category:'Professionnal'
-		// }
 ];
 
-	var daynotes = [
-		// {
-	  //   time: now.startOf('week').add(15, 'h').add(30, 'm').format('X'),
-	  //   title: 'Leo\'s holiday',
-	  //   content: 'yo',
-	  //   category: 'holiday'
-	// }
-];
+var daynotes = [];
   //   var myCalendar = $('#calendar').Calendar({
 	    
 	// }).init();
@@ -103,8 +96,7 @@ $(document).ready(function(){
 	    largeScreen: 'week',
 	    smallScreen: 'week',
 	    smallScreenThreshold: 1000
-	  },
-	 
+		},
 	 
 	  weekday: {
 	    timeline: {
@@ -126,22 +118,22 @@ $(document).ready(function(){
 	      }
 	    }
 	  },
-	  month: {
-	    format: 'MMMM YYYY',
-	    heightPx: 31,
-	    weekline: {
-	      format: 'w',
-	      heightPx: 80
-	    },
-	    dayheader: {
-	      weekdays: [0, 1, 2, 3, 4, 5, 6],
-	      format: 'dddd',
-	      heightPx: 30
-	    },
-	    day: {
-	      format: 'DD/MM'
-	    }
-	  },
+	  // month: {
+	  //   format: 'MMMM YYYY',
+	  //   heightPx: 31,
+	  //   weekline: {
+	  //     format: 'w',
+	  //     heightPx: 80
+	  //   },
+	  //   dayheader: {
+	  //     weekdays: [0, 1, 2, 3, 4, 5, 6],
+	  //     format: 'dddd',
+	  //     heightPx: 30
+	  //   },
+	  //   day: {
+	  //     format: 'DD/MM'
+	  //   }
+	  // },
 	 
 	  // timestamp in the week to display
 	  unixTimestamp: moment().format('X'),
@@ -170,7 +162,7 @@ $(document).ready(function(){
 	 
 	  // display the current time
 	  now: {
-	    enable: false,
+	    enable: true,
 	    refresh: false,
 	    heightPx: 1,
 	    style: 'solid',
@@ -178,5 +170,9 @@ $(document).ready(function(){
 	  }
 	   
 	}).init()
+
+	// style: move 
+	$(".calendar-categories").insertAfter(".calendar-events");
+
 })
 </script>
