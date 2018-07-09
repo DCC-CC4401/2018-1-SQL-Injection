@@ -1,10 +1,13 @@
 <style>
-    table{
-        height: auto;
+    .adm-table{
+        /* height: 100px; */
+        display: block;
+        max-height: 400px;
+        overflow-y: scroll;
     }
 </style>
 
-<table class='table'>
+<table class='table adm-table'>
     <tr>
         <th></th>
         {% for h in headers %}
