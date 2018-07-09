@@ -13,17 +13,18 @@
 
 <script src="https://cdn.jsdelivr.net/npm/pouchdb@6.4.3/dist/pouchdb.min.js"></script>
 
-<div width=300 height=300>
+<div >
 		<div id="calendar"></div>
 </div>
 
 <style>
 	.modal-title {
-		position:fixed
+		position:fixed !important
 	}
 	.calendar-categories {
 		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 14px;
+		font-size: 14px;
+		height: 22px;
     line-height: 1.42857143;
     color: #333;
 		background-color: #fff;
@@ -71,14 +72,11 @@ $(document).ready(function(){
 	    category:'{{d.item__name}}'
 		},
 		// {% endfor %}
-];
+	];
 
-var daynotes = [];
-  //   var myCalendar = $('#calendar').Calendar({
-	    
-	// }).init();
-
-    var myCalendar = $('#calendar').Calendar({
+	var daynotes = [];
+  
+  var myCalendar = $('#calendar').Calendar({
 			
 	  // language
 		locale: 'es',
@@ -147,7 +145,7 @@ var daynotes = [];
 	 
 	  // custom colors
 	  colors: {
-	    // events: eventColors,
+	    // events: ["#558B2F", "#EF6C00", "#AD1457", "#283593", "#4E342E", "#F9A825", "#00695C", "#00838F", "#212121", "#C62828", "#FF8F00", "#9E9D24", "#0277BD", "#4527A0", "#6A1B9A", "#D84315", "#424242", "#1565C0", "#37474F", "#2E7D32"],
 	    // daynotes: daynoteColors,
 	    random: false
 	  },
@@ -169,10 +167,28 @@ var daynotes = [];
 	    color: '#03A9F4'
 	  }
 	   
-	}).init()
+	})
+	myCalendar.init();
+	console.log(myCalendar.getEventColors())
 
 	// style: move 
-	$(".calendar-categories").insertAfter(".calendar-events");
+	// $(".calendar-categories").insertAfter(".calendar-events");
+	// $('.calendar-categories').detach().appendTo('.calendar');
+	$('.calendar-month.weektomonth').click(function(e){
+		e.stopImmediatePropagation()
+		e.stopPropagation()
+	})
+	
+
+	$('.btn-move-calendar').click(function(event, instance, elem, evt){
+		console.log(event);     // jQuery event
+		console.log(instance);  // Equals to var calendar above
+		console.log(elem);      // Use elem to make an animation or somthing else
+		console.log(evt);       // You have all informations to display it in a modal
+	});
+	// ***** warning override prototype ********//
+	// myCalendar.drawCategories()
+
 
 })
 </script>

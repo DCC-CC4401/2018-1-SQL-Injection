@@ -15,7 +15,10 @@ def index(request):
     today = datetime.date.today()
     start_week = today - datetime.timedelta(today.weekday())
     end_week = start_week + datetime.timedelta(7)
-    weekReserves = Space.objects.filter(item__reserve__start__range=[start_week, end_week]).values(
+    # weekReserves = Space.objects.filter(item__reserve__start__range=[start_week, end_week]).values(
+    #     'item__reserve__id', 'item__reserve__user__profile__name','item__reserve__user__profile__rut','item__name', 'item__description','item__reserve__start','item__reserve__finish').order_by('-item__reserve__created')
+
+    weekReserves = Space.objects.values(
         'item__reserve__id', 'item__reserve__user__profile__name','item__reserve__user__profile__rut','item__name', 'item__description','item__reserve__start','item__reserve__finish').order_by('-item__reserve__created')
 
     # Pending reserves
