@@ -30,14 +30,14 @@ class Client(Profile):
 
 
 class Item(models.Model):
-    name = models.CharField(max_length=200)
-    # image = models.FileField(upload_to='inventario_cei/static/img/items')
+    name = models.CharField(max_length=200, db_index=True)
     description = models.TextField(default='')
 
-    # reserves = models.SET(models.ForeignKey(Reserve, default=None, on_delete=models.CASCADE))
     class Meta:
-    #     abstract = True
         verbose_name_plural = "Items"
+
+    def __str__(self):
+        return self.name
 
 
 class Object(models.Model):

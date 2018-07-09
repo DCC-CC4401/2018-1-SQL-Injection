@@ -24,17 +24,25 @@ admin.site.register(Client, ClientAdministrator)
 class ItemAdministrator(admin.ModelAdmin):
     list_display = ('name', 'description')
 
+
 admin.site.register(Item, ItemAdministrator)
 
+
 class ObjectAdministrator(admin.ModelAdmin):
-    list_display = ( 'condition', 'image')
+    list_display = ('item_name', 'condition', 'image')
+
+    def item_name(self, obj):
+        return obj.item.name
 
 
 admin.site.register(Object, ObjectAdministrator)
 
 
 class SpaceAdministrator(admin.ModelAdmin):
-    list_display = ('capacity', 'condition', 'image')
+    list_display = ('item_name', 'capacity', 'condition', 'image')
+
+    def item_name(self, obj):
+        return obj.item.name
 
 
 admin.site.register(Space, SpaceAdministrator)

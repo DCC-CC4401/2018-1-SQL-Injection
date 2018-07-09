@@ -16,9 +16,9 @@
             {% for i in items %}
                 <div class="col-md-3">
                     <div class="card mb-3 box-shadow">
-                        <img class="card-img-top" src="{{ i.image.url|slice:"14:" }}" alt="Imagen de {{ i.name }}" style="height: 13rem;">
+                        <img class="card-img-top" src="{{ i.image.url|slice:"14:" }}" alt="Imagen de {{ i.item.name }}" style="height: 13rem;">
                         <div class="card-body">
-                            <h4 class="card-title text-center">{{ i.name }}</h4>
+                            <h4 class="card-title text-center">{{ i.item.name }}</h4>
                         </div>
                         {% if  i.condition == 'd'%}
                             <div class="card-footer text-white bg-success"><h7>Disponible</h7></div>
