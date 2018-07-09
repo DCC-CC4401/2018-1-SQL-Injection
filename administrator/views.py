@@ -1,55 +1,69 @@
-# from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
+import datetime
+
+from inventario_cei.models import Reserve
 
 
 def index(request):
-    # return HttpResponse("Hello, world. You're at the polls index.")
-    
-    headers = ['id', 'Usuario', 'Fecha Pres','Fecha Sol']
-    articles = [MockData(), MockData()]
+    rooms = [MockSala(), MockSala(), MockSala(), MockSala()]
 
-    salas = [MockSala(), MockSala(), MockSala(), MockSala()]
+    # all week reserves
+    today = datetime.datetime.today()
+    start_week = today - datetime.timedelta(today.weekday())
+    end_week = start_week + datetime.timedelta(7)
+    week_reserves = Reserve.objects.filter(start__range=[start_week, end_week]).values(
+        'id', 'user__username', 'space__name', 'start', 'finish').order_by('-created')
 
-    context = {'message' : "Hello world!",
-                'orderHeaders': headers,
-                'pendingHeaders': headers,
-                'orders': articles,
-                'pending': articles,
-                'salas': salas,
-            } 
-    template = loader.get_template('administrator/index.html')
-    
-    return HttpResponse(template.render(context, request))
+    # Pending reserves
+    pending_headers = ['Id', 'Usuario', 'Articulo', 'Fecha de prestamo', 'Fecha de solicitud']
+    pending = Reserve.objects.filter(state='p').values(
+        'id', 'user__username', 'space__name', 'start', 'finish').order_by('-created')
 
-
-# Esta fue creada para visualizar el header y nada mas. Debe ser eliminada luego del testing.
-def index_beta(request):
-    # return HttpResponse("Hello, world. You're at the polls index.")
-
-    headers = ['id', 'Usuario', 'Fecha Pres', 'Fecha Sol']
-    articles = [MockData(), MockData()]
-
-    salas = [MockSala(), MockSala(), MockSala(), MockSala()]
+    # Lending
+    lending_headers = ['Id', 'Usuario', 'Articulo', 'Fecha de prestamo', 'Fecha de solicitud']
+    lendings = Reserve.objects.filter(state='a').values(
+        'id', 'user__username', 'space__name', 'start', 'finish', 'state').order_by('-updated')
 
     context = {'message': "Hello world!",
-               'orderHeaders': headers,
-               'pendingHeaders': headers,
-               'orders': articles,
-               'pending': articles,
-               'salas': salas,
+               'weekReserves': week_reserves,
+               'pendingHeaders': pending_headers,
+               'pendings': list(pending),
+               'lendingHeaders': lending_headers,
+               'lendings': list(lendings),
+               'rooms': rooms,
                }
-    template = loader.get_template('base.html')
+    template = loader.get_template('administrator/index.html')
 
     return HttpResponse(template.render(context, request))
 
 
-class MockData():
-    id = 1
-    article = 'Article 1'
-    lendingDate = '27/12/2018'
-    returnDate = '27/12/2019'
+def post_pending(request):
+    if request.method != 'POST':
+        return HttpResponseRedirect('/administrator')
 
-class MockSala():
+    selected_ids = request.POST.getlist('pre-selected')
+
+    if len(selected_ids) == 0:
+        return HttpResponseRedirect('/administrator')
+    resvs = Reserve.objects.filter(pk__in=selected_ids)
+    if 'accept' in request.POST:
+        for r in resvs:
+            r.state = 'a'
+            r.save()
+    elif 'negate' in request.POST:
+        for r in resvs:
+            r.state = 'r'
+            r.save()
+
+    return HttpResponseRedirect('/administrator')
+
+
+# TODO: define behavior
+def post_lending(request):
+    return HttpResponseRedirect('/administrator')
+
+
+class MockSala:
     id = 1
     name = 'Sala #'

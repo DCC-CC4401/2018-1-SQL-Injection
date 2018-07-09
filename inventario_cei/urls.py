@@ -7,4 +7,8 @@ urlpatterns = [
     path('index', views.index, name='home'),
     path('objetos', views.objects, name='objetos'),
     path('espacios', views.spaces, name='espacios'),
+
+    # helping urls
+    path('testdata', views.testdata, name='testdata'),
+    path('createtestdata', views.createtestdata, name='createtestdata')
 ]

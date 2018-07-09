@@ -20,4 +20,5 @@ urlpatterns = [
     path('', include('inventario_cei.urls')),
     path('admin/', admin.site.urls),
     path('administrator/', include('administrator.urls')),
+    path('cei/', include('inventario_cei.urls')),
 ]

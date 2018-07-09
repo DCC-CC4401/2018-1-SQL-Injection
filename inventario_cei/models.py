@@ -29,32 +29,19 @@ class Client(Profile):
         verbose_name_plural = "Clientes"
 
 
-class Reserve(models.Model):
-    start = models.DateTimeField()
-    finish = models.DateTimeField()
-    STATES = (
-        ('a', 'Aceptada'),
-        ('r', 'Rechazada'),
-        ('p', 'Pendiente')
-    )
-    state = models.CharField(max_length=1, choices=STATES)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name_plural = "Reservas"
-
-
 class Item(models.Model):
     name = models.CharField(max_length=200)
-    image = models.FileField(upload_to='inventario_cei/static/img/items')
+    # image = models.FileField(upload_to='inventario_cei/static/img/items')
     description = models.TextField(default='')
-    reserves = models.SET(models.ForeignKey(Reserve, default=None, on_delete=models.CASCADE))
 
+    # reserves = models.SET(models.ForeignKey(Reserve, default=None, on_delete=models.CASCADE))
     class Meta:
-        abstract = True
+    #     abstract = True
+        verbose_name_plural = "Items"
 
 
-class Object(Item):
+class Object(models.Model):
+    item = models.OneToOneField(Item, null=True, on_delete=models.CASCADE)
     image = models.FileField(upload_to='inventario_cei/static/img/items/objects') # Overriding parent class attribute
     CONDITIONS = (
         ('d', 'Disponible'),
@@ -68,7 +55,8 @@ class Object(Item):
         verbose_name_plural = "Objetos"
 
 
-class Space(Item):
+class Space(models.Model):
+    item = models.OneToOneField(Item, null=True, on_delete=models.CASCADE)
     image = models.FileField(upload_to='inventario_cei/static/img/items/spaces') # Overriding parent class attribute
     CONDITIONS = (
         ('d', 'Disponible'),
@@ -81,13 +69,36 @@ class Space(Item):
     class Meta:
         verbose_name_plural = "Espacios"
 
+class Reserve(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    
+    start = models.DateTimeField(auto_now_add=True)
+    finish = models.DateTimeField()
+    STATES = (
+        ('a', 'Aceptada'),
+        ('r', 'Rechazada'),
+        ('p', 'Pendiente')
+    )
+    state = models.CharField(max_length=1, choices=STATES)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, null=True, on_delete=models.CASCADE)
+    # object = models.ForeignKey(Object, null=True, on_delete=models.CASCADE)
+    # space = models.ForeignKey(Space, null=True, on_delete=models.CASCADE)
 
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
+
+    class Meta:
+        verbose_name_plural = "Reservas"
 
 
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
+# TODO: deprecated, problem with primary key 'rut'
+# @receiver(post_save, sender=User)
+# def create_user_profile(sender, instance, created, **kwargs):
+#     if created:
+#         Profile.objects.create(user=instance)
+
+
+# @receiver(post_save, sender=User)
+# def save_user_profile(sender, instance, **kwargs):
+#     instance.profile.save()
+
