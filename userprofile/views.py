@@ -15,9 +15,15 @@ def index(request):
 
 def delete(request):
     if request.method == 'POST':
-        l_id = request.POST['l_id']
+        l_id = request.POST.getlist('l_id')
         for i in l_id:
             Reserve.objects.filter(id=i).delete()
         return redirect('/userprofile')
     else:
         return render(request, 'userprofile/index.html')
+
+
+def administrator(request):
+    context = {'message': "Hello world!"}
+    template = loader.get_template('administrator/index.html')
+    return HttpResponse(template.render(context, request))

@@ -9,11 +9,12 @@ class Profile(models.Model):
     rut = models.CharField(max_length=12, primary_key=True)
     name = models.CharField(max_length=200)
     mail = models.EmailField()
-    photo = models.FileField()
+    photo = models.FileField(upload_to='inventario_cei/static/img/profile_pictures')
 
 
 class Admin(Profile):
-    pass
+    class Meta:
+        verbose_name_plural = "Administradores"
 
 
 class Client(Profile):
@@ -23,27 +24,24 @@ class Client(Profile):
     )
     enable = models.CharField(max_length=2, choices=ENABLE)
 
-
-class Reserve(models.Model):
-    start = models.DateTimeField()
-    finish = models.DateTimeField()
-    STATES = (
-        ('a', 'Aceptada'),
-        ('r', 'Rechazada'),
-        ('p', 'Pendiente')
-    )
-    state = models.CharField(max_length=1, choices=STATES)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    class Meta:
+        verbose_name_plural = "Clientes"
 
 
 class Item(models.Model):
     name = models.CharField(max_length=200)
-    image = models.FileField()
-    description = models.TextField()
-    reserves = models.SET(models.ForeignKey(Reserve, on_delete=models.CASCADE))
+    # image = models.FileField(upload_to='inventario_cei/static/img/items')
+    description = models.TextField(default='')
+
+    # reserves = models.SET(models.ForeignKey(Reserve, default=None, on_delete=models.CASCADE))
+    class Meta:
+        #     abstract = True
+        verbose_name_plural = "Items"
 
 
-class Object(Item):
+class Object(models.Model):
+    item = models.OneToOneField(Item, null=True, on_delete=models.CASCADE)
+    image = models.FileField(upload_to='inventario_cei/static/img/items/objects')  # Overriding parent class attribute
     CONDITIONS = (
         ('d', 'Disponible'),
         ('p', 'En Préstamo'),
@@ -52,8 +50,13 @@ class Object(Item):
     )
     condition = models.CharField(max_length=1, choices=CONDITIONS)
 
+    class Meta:
+        verbose_name_plural = "Objetos"
 
-class Space(Item):
+
+class Space(models.Model):
+    item = models.OneToOneField(Item, null=True, on_delete=models.CASCADE)
+    image = models.FileField(upload_to='inventario_cei/static/img/items/spaces')  # Overriding parent class attribute
     CONDITIONS = (
         ('d', 'Disponible'),
         ('p', 'En Préstamo'),
@@ -62,13 +65,38 @@ class Space(Item):
     condition = models.CharField(max_length=1, choices=CONDITIONS)
     capacity = models.IntegerField()
 
-
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
+    class Meta:
+        verbose_name_plural = "Espacios"
 
 
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
+class Reserve(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    start = models.DateTimeField(auto_now_add=True)
+    finish = models.DateTimeField()
+    STATES = (
+        ('a', 'Aceptada'),
+        ('r', 'Rechazada'),
+        ('p', 'Pendiente')
+    )
+    state = models.CharField(max_length=1, choices=STATES)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, null=True, on_delete=models.CASCADE)
+
+    # object = models.ForeignKey(Object, null=True, on_delete=models.CASCADE)
+    # space = models.ForeignKey(Space, null=True, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name_plural = "Reservas"
+
+# TODO: deprecated, problem with primary key 'rut'
+# @receiver(post_save, sender=User)
+# def create_user_profile(sender, instance, created, **kwargs):
+#     if created:
+#         Profile.objects.create(user=instance)
+
+
+# @receiver(post_save, sender=User)
+# def save_user_profile(sender, instance, **kwargs):
+#     instance.profile.save()
