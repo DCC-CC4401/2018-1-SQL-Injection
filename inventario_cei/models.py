@@ -1,7 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 
 class Profile(models.Model):
@@ -13,7 +11,6 @@ class Profile(models.Model):
 
 
 class Admin(Profile):
-
     class Meta:
         verbose_name_plural = "Administradores"
 
@@ -42,7 +39,7 @@ class Item(models.Model):
 
 class Object(models.Model):
     item = models.OneToOneField(Item, null=True, on_delete=models.CASCADE)
-    image = models.FileField(upload_to='inventario_cei/static/img/items/objects') # Overriding parent class attribute
+    image = models.FileField(upload_to='inventario_cei/static/img/items/objects')
     CONDITIONS = (
         ('d', 'Disponible'),
         ('p', 'En Préstamo'),
@@ -57,7 +54,7 @@ class Object(models.Model):
 
 class Space(models.Model):
     item = models.OneToOneField(Item, null=True, on_delete=models.CASCADE)
-    image = models.FileField(upload_to='inventario_cei/static/img/items/spaces') # Overriding parent class attribute
+    image = models.FileField(upload_to='inventario_cei/static/img/items/spaces')
     CONDITIONS = (
         ('d', 'Disponible'),
         ('p', 'En Préstamo'),
@@ -69,11 +66,12 @@ class Space(models.Model):
     class Meta:
         verbose_name_plural = "Espacios"
 
+
 class Reserve(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    
-    start = models.DateTimeField(auto_now_add=True)
+
+    start = models.DateTimeField()
     finish = models.DateTimeField()
     STATES = (
         ('a', 'Aceptada'),
@@ -83,13 +81,9 @@ class Reserve(models.Model):
     state = models.CharField(max_length=1, choices=STATES)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     item = models.ForeignKey(Item, null=True, on_delete=models.CASCADE)
-    # object = models.ForeignKey(Object, null=True, on_delete=models.CASCADE)
-    # space = models.ForeignKey(Space, null=True, on_delete=models.CASCADE)
-
 
     class Meta:
         verbose_name_plural = "Reservas"
-
 
 # TODO: deprecated, problem with primary key 'rut'
 # @receiver(post_save, sender=User)
@@ -101,4 +95,3 @@ class Reserve(models.Model):
 # @receiver(post_save, sender=User)
 # def save_user_profile(sender, instance, **kwargs):
 #     instance.profile.save()
-

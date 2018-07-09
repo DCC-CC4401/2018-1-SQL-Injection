@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('administrator/', include('administrator.urls')),
     path('cei/', include('inventario_cei.urls')),
+    path('userprofile/', include('userprofile.urls'))
 ]
