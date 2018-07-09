@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.core import serializers
 from django.template import loader
 from django.http import HttpResponse,JsonResponse,HttpResponseRedirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+
 
 from datetime import datetime, timedelta
 import json
@@ -42,6 +43,13 @@ def handleLogin(request):
     else:
         return HttpResponseRedirect('/cei/login')
         
+
+def handleLogout(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/userprofile')
+    
+    logout(request)
+    return HttpResponseRedirect('/cei/login')
 
 
 # TODO: delete this method for production
