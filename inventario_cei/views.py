@@ -57,5 +57,5 @@ def createtestdata(request):
     clients = createClient()
     halls = createHalls()
     reservations = createReservations(clients, halls)
-    
+
     return JsonResponse({'result': 'successfully completed!'}, safe=False)
