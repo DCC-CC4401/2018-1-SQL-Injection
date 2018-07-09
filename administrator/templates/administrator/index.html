@@ -20,6 +20,32 @@
     .selectable-actions{
         align-content: right;
     }
+    .adm-lend-filters {
+        display: flex;
+        flex-direction: row;
+    }
+    .adm-lend-filters .list-group-item {
+        padding: 5px;
+    }
+
+    /* .list-group-horizontal .list-group-item {
+        display: inline-block;
+    }
+    .list-group-horizontal .list-group-item {
+        margin-bottom: 0;
+        margin-left:-4px;
+        margin-right: 0;
+    }
+    .list-group-horizontal .list-group-item:first-child {
+        border-top-right-radius:0;
+        border-bottom-left-radius:4px;
+    }
+    .list-group-horizontal .list-group-item:last-child {
+        border-top-right-radius:4px;
+        border-bottom-left-radius:0;
+    } */
+
+    
 </style>
 
 <!--         Calendar           -->
@@ -61,13 +87,12 @@
             {% csrf_token %}
             <div class="border-dark">
                 <div class="row">
-                    <ul class="list-inline">
-                            <li class="list-inline-item"><a class="col-sm" onclick="clearFilters()" href="#">Todos</a></li>
-                            <li class="list-inline-item"><a class="col-sm" onclick="filterOnTime()" href="#">Vigentes</a></li>
-                            <li class="list-inline-item"><a class="col-sm" onclick="filterOutOfTime()" href="#">Caducados</a></li>
-                            <li class="list-inline-item"><a class="col-sm" onclick="filterLost()" href="#">Perdidos</a></li>
+                    <ul class="adm-lend-filters list-group list-group-horizontal">
+                        <a class="col-sm list-group-item" onclick="clearFilters()" href="javascript:void(0);">Todos</a>
+                        <a class="col-sm list-group-item" onclick="filterOnTime()" href="javascript:void(0);">Vigentes</a>
+                        <a class="col-sm list-group-item" onclick="filterOutOfTime()" href="javascript:void(0);">Caducados</a>
+                        <a class="col-sm list-group-item" onclick="filterLost()" href="javascript:void(0);">Perdidos</a>
                     </ul>
-                    
                     <!--    checkbox buttons    -->
                     <div class="col-sm">
                         <button class="float-right button-transparent" name="negate" >
@@ -86,9 +111,16 @@
 </div>
 
 <script>
+    $(document).ready(function(){
+        $('.adm-lend-filters a').onclick(function(event){
+            event.stopImmediatePropagation();
+            event.preventDefault();
+        })
+    })
+     
     function enlightSelectedFilter(el){
-        $('.filter-selected').removeClass('filter-selected')
-        $(el).addClass('filter-selected')
+        $('.active').removeClass('active')
+        $(el).addClass('active')
     }
     function getFilteredElements(){
         return $('#lendings tr.res-lending td.item__reserve__finish')
