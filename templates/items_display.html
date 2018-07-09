@@ -45,8 +45,6 @@
                 if (current_height > max_height) max_height = current_height;
             });
 
-            console.log(max_height);
-
             $('.card-body').each(function (e) {
                 $(this).css('height', max_height);
             });
