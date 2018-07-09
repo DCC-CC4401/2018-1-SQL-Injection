@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from django.core import serializers
-from django.http import JsonResponse
+from django.template import loader
+from django.http import HttpResponse,JsonResponse,HttpResponseRedirect
+from django.contrib.auth import authenticate, login
+
 from datetime import datetime, timedelta
 import json
 import datetime
@@ -15,6 +18,27 @@ from inventario_cei.models import Reserve
 from inventario_cei.models import Profile
 
 from .testdata import createClient,createHalls,createReservations,createObjects
+
+
+# login
+def login(request):
+    context = {}
+    if request.method == 'GET':
+        template = loader.get_template('login.html')
+        return HttpResponse(template.render(context, request))
+
+    if request.method != 'POST':
+        return HttpResponseRedirect('/cei/login')
+
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        return HttpResponseRedirect('/userprofile')
+    else:
+        return HttpResponseRedirect('/cei/login')
+        
 
 
 # TODO: delete this method for production
