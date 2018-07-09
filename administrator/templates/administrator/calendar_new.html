@@ -1,0 +1,194 @@
+{% load static %}
+
+<!-- <link rel="stylesheet" href="{% static 'calendar_jquery/jquery-calendar-bootstrap.min.css' %}"> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+
+<script src="{% static '/calendar_jquery/moment-with-locales.min.js' %}"></script>
+<script src="{% static '/calendar_jquery/jquery.touchSwipe.min.js' %}"></script>
+<script src="{% static '/calendar_jquery/bootstrap-timepicker.min.js' %}"></script>
+
+<link rel="stylesheet" href="{% static 'calendar_jquery/jquery-calendar.min.css' %}">
+<script src="{% static '/calendar_jquery/jquery-calendar.min.js' %}"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/pouchdb@6.4.3/dist/pouchdb.min.js"></script>
+
+<div >
+		<div id="calendar"></div>
+</div>
+
+<style>
+	.modal-title {
+		position:fixed !important
+	}
+	.calendar-categories {
+		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+		font-size: 14px;
+		height: 22px;
+    line-height: 1.42857143;
+    color: #333;
+		background-color: #fff;
+	}
+	.calendar-label {
+		display: inline;
+    padding: .2em .6em .3em;
+    font-size: 100%;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+		border-radius: .25em;
+		box-sizing: border-box;
+	}
+
+
+/* $(".calendar-categories").insertAfter(".calendar-events") */
+
+	.calendar-events{
+		margin-bottom: 20px;
+	}
+
+	.calendar .event-name{
+		font-size: 1rem;
+	}
+	 
+</style>
+<script>
+$(document).ready(function(){
+	
+	// configure calendar
+  moment.locale('es');
+	var now = moment();
+	var events = [
+		// Do not delete the commens inside
+		// {% for d in weekReserves %}
+		{
+	    start: moment("{{ d.item__reserve__start|date:'Y-m-d H:i' }}").format('X'),
+			end: moment("{{ d.item__reserve__finish|date:'Y-m-d H:i' }}").format('X'),
+	    title: '{{d.item__name}}',
+			content: "<span>{{d.item__reserve__user__profile__name}}</span> <br/><span>RUT: {{d.item__reserve__user__profile__rut}}</span> <br/><p>{{d.description}}<p/>",
+	    category:'{{d.item__name}}'
+		},
+		// {% endfor %}
+	];
+
+	var daynotes = [];
+  
+  var myCalendar = $('#calendar').Calendar({
+			
+	  // language
+		locale: 'es',
+		events: events,
+	  daynotes: daynotes,
+	 
+	  // 'day', 'week', 'month'
+	  view: 'week',
+	 
+	  // enable keyboard navigation
+	  enableKeyboard: true,
+	 
+	  // default view
+	  defaultView: {
+	    largeScreen: 'week',
+	    smallScreen: 'week',
+	    smallScreenThreshold: 1000
+		},
+	 
+	  weekday: {
+	    timeline: {
+	      fromHour: 9, // start hour
+	      toHour: 22, // end hour
+	      intervalMinutes: 60,
+	      format: 'HH:mm',
+	      heightPx: 30,
+	      autoResize: true
+	    },
+	    dayline: {
+	      weekdays: [0, 1, 2, 3, 4, 5],
+	      format: 'dddd DD/MM',
+	      heightPx: 31,
+	      month: {
+	        format: 'MMMM YYYY',
+	        heightPx: 30,
+	        weekFormat: 'w'
+	      }
+	    }
+	  },
+	  // month: {
+	  //   format: 'MMMM YYYY',
+	  //   heightPx: 31,
+	  //   weekline: {
+	  //     format: 'w',
+	  //     heightPx: 80
+	  //   },
+	  //   dayheader: {
+	  //     weekdays: [0, 1, 2, 3, 4, 5, 6],
+	  //     format: 'dddd',
+	  //     heightPx: 30
+	  //   },
+	  //   day: {
+	  //     format: 'DD/MM'
+	  //   }
+	  // },
+	 
+	  // timestamp in the week to display
+	  unixTimestamp: moment().format('X'),
+	 
+	  // event options
+	  event: {
+	    hover: {
+	      delay: 200
+	    }
+	  },
+	 
+	  // custom colors
+	  colors: {
+	    // events: ["#558B2F", "#EF6C00", "#AD1457", "#283593", "#4E342E", "#F9A825", "#00695C", "#00838F", "#212121", "#C62828", "#FF8F00", "#9E9D24", "#0277BD", "#4527A0", "#6A1B9A", "#D84315", "#424242", "#1565C0", "#37474F", "#2E7D32"],
+	    // daynotes: daynoteColors,
+	    random: false
+	  },
+	 
+	  // category options
+	  categories: {
+	    enable: true,
+	    hover: {
+	      delay: 500
+	    }
+	  },
+	 
+	  // display the current time
+	  now: {
+	    enable: true,
+	    refresh: false,
+	    heightPx: 1,
+	    style: 'solid',
+	    color: '#03A9F4'
+	  }
+	   
+	})
+	myCalendar.init();
+	console.log(myCalendar.getEventColors())
+
+	// style: move 
+	// $(".calendar-categories").insertAfter(".calendar-events");
+	// $('.calendar-categories').detach().appendTo('.calendar');
+	$('.calendar-month.weektomonth').click(function(e){
+		e.stopImmediatePropagation()
+		e.stopPropagation()
+	})
+	
+
+	$('.btn-move-calendar').click(function(event, instance, elem, evt){
+		console.log(event);     // jQuery event
+		console.log(instance);  // Equals to var calendar above
+		console.log(elem);      // Use elem to make an animation or somthing else
+		console.log(evt);       // You have all informations to display it in a modal
+	});
+	// ***** warning override prototype ********//
+	// myCalendar.drawCategories()
+
+
+})
+</script>

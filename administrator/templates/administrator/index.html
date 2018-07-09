@@ -2,33 +2,76 @@
 {% load static  %}
 {% block content %}
 
-{% include 'administrator/calendar.html' %}
 <style>
-   .icon-actions {
-       width: 13pt
-   }
-   .icon-car {
-        background-image: url("{% static '/icons8-cancel-48.png' %}");
+    .adm-cal-container{
+        margin:10px
+    }
+    .icon-actions {
+        width: 19pt;
+        cursor: pointer;
+    }
+    .button-transparent {
+        /* background-image: url("{% static '/icons8-cancel-48.png' %}"); */
         background-position: center center;
+        border: none;
+        background: none;
+        margin: 2px
     }
     .selectable-actions{
         align-content: right;
     }
+    .adm-lend-filters {
+        display: flex;
+        flex-direction: row;
+    }
+    .adm-lend-filters .list-group-item {
+        padding: 5px;
+    }
+
+    /* .list-group-horizontal .list-group-item {
+        display: inline-block;
+    }
+    .list-group-horizontal .list-group-item {
+        margin-bottom: 0;
+        margin-left:-4px;
+        margin-right: 0;
+    }
+    .list-group-horizontal .list-group-item:first-child {
+        border-top-right-radius:0;
+        border-bottom-left-radius:4px;
+    }
+    .list-group-horizontal .list-group-item:last-child {
+        border-top-right-radius:4px;
+        border-bottom-left-radius:0;
+    } */
+
+    
 </style>
 
+<!--         Calendar           -->
+<div class="row adm-cal-container">
+{% include 'administrator/calendar_new.html' %}
+</div>
+
+<!--          Tables            -->
 <div class="row">
     <div class="col-sm-6">
         <div class="row border-dark">
-            <h4 class="col-sm-10" style='margin:0'>Pendiente</h4>
+            <h4 class="col-sm-10" >Pendiente</h4>
         </div>
         <form action="postpending" method='post'>
             {% csrf_token %}
+            <!--    checkbox buttons    -->
             <div class="row border-dark">
                 <div class="col-sm">
-                    <button class="float-right" name="negate"><img class="icon-actions" src="{% static "/icons8-cancel-48.png" %}" class="img-responsive"></button>
-                    <button class="float-right" name="accept"><img class="icon-actions" src="{% static "/icons8-ok-48.png" %}" class="img-responsive"></button>
+                    <button class="float-right button-transparent" name="negate" >
+                        <img class="icon-actions img-responsive" src="{% static "/icons8-cancel-48.png" %}" title="Denegar"></button>
+                    <button class="float-right button-transparent" name="accept" >
+                        <img class="icon-actions img-responsive" src="{% static "/icons8-ok-48.png" %}" title="Aceptar"></button>
                 </div>
             </div>
+
+            <!--    data table content    -->
             {% with data=pendings headers=pendingHeaders %}
             {% include 'administrator/selectableTable.html' %}
             {% endwith %}
@@ -36,39 +79,51 @@
     </div>
     <div id="lendings" class="col-sm-6">
         <div class="border-dark">
-            <h4 class="col-sm-5" style='margin:0'>Pedidos</h4>
+            <h4 class="col-sm-5" >Pedidos</h4>
         </div>
         <!-- <form action="postlending" method='post'> -->
+
+        <!--    filters table    -->
             {% csrf_token %}
             <div class="border-dark">
                 <div class="row">
-                    <a class="col-sm" onclick="clearFilters()" href="#">Todos</a>
-                    <a class="col-sm" onclick="filterOnTime()" href="#">Vigentes</a>
-                    <a class="col-sm" onclick="filterOutOfTime()" href="#">Caducados</a>
-                    <a class="col-sm" onclick="filterLost()" href="#">Perdidos</a>
+                    <ul class="adm-lend-filters list-group list-group-horizontal">
+                        <a class="col-sm list-group-item active" onclick="clearFilters()" href="javascript:void(0);">Todos</a>
+                        <a class="col-sm list-group-item" onclick="filterOnTime()" href="javascript:void(0);">Vigentes</a>
+                        <a class="col-sm list-group-item" onclick="filterOutOfTime()" href="javascript:void(0);">Caducados</a>
+                        <a class="col-sm list-group-item" onclick="filterLost()" href="javascript:void(0);">Perdidos</a>
+                    </ul>
+                    <!--    checkbox buttons    -->
                     <div class="col-sm">
-                        <button class="float-right" name="negate"><img class="icon-actions" src="{% static "/icons8-cancel-48.png" %}" class="img-responsive"></a>
-                        <button class="float-right" name="accept"><img class="icon-actions" src="{% static "/icons8-ok-48.png" %}" class="img-responsive"></a>
+                        <button class="float-right button-transparent" name="negate" >
+                            <img class="icon-actions img-responsive" src="{% static "/icons8-cancel-48.png" %}" title="Denegar"></button>
+                        <button class="float-right button-transparent" name="accept" >
+                            <img class="icon-actions img-responsive" src="{% static "/icons8-ok-48.png" %}" title="Aceptar"></button>
                     </div>
                 </div>
             </div>
-        
+        <!--    data table content    -->
             {% with data=lendings headers=lendingHeaders %}
             {% include 'administrator/selectableTable.html' %}
             {% endwith %}
         <!-- </form> -->
     </div>
 </div>
-<style>
 
-</style>
 <script>
+    $(document).ready(function(){
+        $('.adm-lend-filters a').click(function(event){
+            event.stopImmediatePropagation();
+            event.preventDefault();
+        })
+    })
+     
     function enlightSelectedFilter(el){
-        $('.filter-selected').removeClass('filter-selected')
-        $(el).addClass('filter-selected')
+        $('.active').removeClass('active')
+        $(el).addClass('active')
     }
     function getFilteredElements(){
-        return $('#lendings .res-lending td.finish')
+        return $('#lendings tr.res-lending td.item__reserve__finish')
     }
     function clearFilters(){
         enlightSelectedFilter(this.event.target)
@@ -95,6 +150,7 @@
             var el = $(e);
             var parent = el.parent('tr');
             parent.hide();
+            console.log(el.text())
             if (Date.parse(el.text()) < Date.now()){
                 parent.show()
             }
@@ -102,7 +158,7 @@
     }
     function filterLost(){
         enlightSelectedFilter(this.event.target)
-        $('#lendings .res-lending td.state').each(function(i,e){
+        $('#lendings .res-lending td.condition').each(function(i,e){
             var el = $(e);
             var parent = el.parent('tr');
             parent.hide()
