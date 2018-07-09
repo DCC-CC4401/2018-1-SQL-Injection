@@ -12,7 +12,7 @@ def index(request):
     rooms = [MockSala(), MockSala(), MockSala(), MockSala()]
 
     # all week reserves 
-    today = datetime.datetime.today()
+    today = datetime.date.today()
     start_week = today - datetime.timedelta(today.weekday())
     end_week = start_week + datetime.timedelta(7)
     weekReserves = Space.objects.filter(item__reserve__start__range=[start_week, end_week]).values(

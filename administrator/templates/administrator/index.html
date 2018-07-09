@@ -2,12 +2,14 @@
 {% load static  %}
 {% block content %}
 
-{% include 'administrator/calendar.html' %}
 <style>
-   .icon-actions {
-       width: 13pt
-   }
-   .icon-car {
+    .adm-cal-container{
+        margin:10px
+    }
+    .icon-actions {
+        width: 13pt
+    }
+    .icon-car {
         background-image: url("{% static '/icons8-cancel-48.png' %}");
         background-position: center center;
     }
@@ -16,19 +18,30 @@
     }
 </style>
 
+<!--         Calendar           -->
+<div class="row adm-cal-container">
+{% include 'administrator/calendar_new.html' %}
+</div>
+
+<!--          Tables            -->
 <div class="row">
     <div class="col-sm-6">
         <div class="row border-dark">
-            <h4 class="col-sm-10" style='margin:0'>Pendiente</h4>
+            <h4 class="col-sm-10" >Pendiente</h4>
         </div>
         <form action="postpending" method='post'>
             {% csrf_token %}
+            <!--    checkbox buttons    -->
             <div class="row border-dark">
                 <div class="col-sm">
-                    <button class="float-right" name="negate"><img class="icon-actions" src="{% static "/icons8-cancel-48.png" %}" class="img-responsive"></button>
-                    <button class="float-right" name="accept"><img class="icon-actions" src="{% static "/icons8-ok-48.png" %}" class="img-responsive"></button>
+                    <button class="float-right" name="negate">
+                        <img class="icon-actions img-responsive" src="{% static "/icons8-cancel-48.png" %}" ></button>
+                    <button class="float-right" name="accept">
+                        <img class="icon-actions img-responsive" src="{% static "/icons8-ok-48.png" %}" ></button>
                 </div>
             </div>
+
+            <!--    data table content    -->
             {% with data=pendings headers=pendingHeaders %}
             {% include 'administrator/selectableTable.html' %}
             {% endwith %}
@@ -36,9 +49,11 @@
     </div>
     <div id="lendings" class="col-sm-6">
         <div class="border-dark">
-            <h4 class="col-sm-5" style='margin:0'>Pedidos</h4>
+            <h4 class="col-sm-5" >Pedidos</h4>
         </div>
         <!-- <form action="postlending" method='post'> -->
+
+        <!--    filters table    -->
             {% csrf_token %}
             <div class="border-dark">
                 <div class="row">
@@ -52,16 +67,14 @@
                     </div>
                 </div>
             </div>
-        
+        <!--    data table content    -->
             {% with data=lendings headers=lendingHeaders %}
             {% include 'administrator/selectableTable.html' %}
             {% endwith %}
         <!-- </form> -->
     </div>
 </div>
-<style>
 
-</style>
 <script>
     function enlightSelectedFilter(el){
         $('.filter-selected').removeClass('filter-selected')

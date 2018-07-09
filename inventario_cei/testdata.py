@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.core import serializers
 from django.http import JsonResponse
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta,date
 import json
 
 from django.contrib.auth.models import User
@@ -23,9 +23,11 @@ def createReservations(clients, halls):
         r.user = clients[i].user
         r.item = halls[i].item
         r.start = datetime.now()
-        r.finish = datetime.now() + timedelta(hours=9)
+        r.finish = datetime.now() + timedelta(hours=1)
         r.state = 'p'
         r.save()
+        # a = date.today() + timedelta(days=2)
+        # b
         data.append(r)
     return 
 

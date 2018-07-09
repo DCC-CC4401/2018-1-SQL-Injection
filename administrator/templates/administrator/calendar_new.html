@@ -1,0 +1,182 @@
+{% load static %}
+
+<!-- <link rel="stylesheet" href="{% static 'calendar_jquery/jquery-calendar-bootstrap.min.css' %}"> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+
+<script src="{% static '/calendar_jquery/moment-with-locales.min.js' %}"></script>
+<script src="{% static '/calendar_jquery/jquery.touchSwipe.min.js' %}"></script>
+<script src="{% static '/calendar_jquery/bootstrap-timepicker.min.js' %}"></script>
+
+<link rel="stylesheet" href="{% static 'calendar_jquery/jquery-calendar.min.css' %}">
+<script src="{% static '/calendar_jquery/jquery-calendar.min.js' %}"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/pouchdb@6.4.3/dist/pouchdb.min.js"></script>
+
+<div width=300 height=300>
+		<div id="calendar"></div>
+</div>
+
+<style>
+	.modal-title {
+		position:fixed
+	}
+	.calendar-categories {
+		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+		background-color: #fff;
+	}
+	.calendar-label {
+		display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+		border-radius: .25em;
+		box-sizing: border-box;
+	}
+
+	.calendar .event-name{
+		font-size: 1rem;
+	}
+	 
+</style>
+<script>
+$(document).ready(function(){
+
+  moment.locale('es');
+	var now = moment();
+	var events = [
+		// {% for d in weekReserves %}
+		{
+	    // start: now.startOf('week').add(33, 'h').format('X'),
+	    // end: now.startOf('week').add(35, 'h').format('X'),
+			start: moment("{{ d.item__reserve__start|date:'Y-m-d H:i' }}").format('X'),
+			end: moment("{{ d.item__reserve__finish|date:'Y-m-d H:i' }}").format('X'),
+	    title: '{{d.item__name}}',
+	    content: "{{d.item__name}} <br> <p>{{ d.item__reserve__start|date:'H:i' }} - {{ d.item__reserve__finish|date:'H:i' }}</p>",
+	    category:'{{d.item__name}}'
+		},
+		// {% endfor %}
+		// {
+	  //   start: now.startOf('week').add(33, 'h').format('X'),
+	  //   end: now.startOf('week').add(35, 'h').format('X'),
+	  //   title: '2',
+	  //   content: 'Hello World! <br> <p>Foo Bar</p>',
+	  //   category:'Professionnal'
+		// }
+];
+
+	var daynotes = [
+		// {
+	  //   time: now.startOf('week').add(15, 'h').add(30, 'm').format('X'),
+	  //   title: 'Leo\'s holiday',
+	  //   content: 'yo',
+	  //   category: 'holiday'
+	// }
+];
+  //   var myCalendar = $('#calendar').Calendar({
+	    
+	// }).init();
+
+    var myCalendar = $('#calendar').Calendar({
+			
+	  // language
+		locale: 'es',
+		events: events,
+	  daynotes: daynotes,
+	 
+	  // 'day', 'week', 'month'
+	  view: 'week',
+	 
+	  // enable keyboard navigation
+	  enableKeyboard: true,
+	 
+	  // default view
+	  defaultView: {
+	    largeScreen: 'week',
+	    smallScreen: 'week',
+	    smallScreenThreshold: 1000
+	  },
+	 
+	 
+	  weekday: {
+	    timeline: {
+	      fromHour: 9, // start hour
+	      toHour: 22, // end hour
+	      intervalMinutes: 60,
+	      format: 'HH:mm',
+	      heightPx: 30,
+	      autoResize: true
+	    },
+	    dayline: {
+	      weekdays: [0, 1, 2, 3, 4, 5],
+	      format: 'dddd DD/MM',
+	      heightPx: 31,
+	      month: {
+	        format: 'MMMM YYYY',
+	        heightPx: 30,
+	        weekFormat: 'w'
+	      }
+	    }
+	  },
+	  month: {
+	    format: 'MMMM YYYY',
+	    heightPx: 31,
+	    weekline: {
+	      format: 'w',
+	      heightPx: 80
+	    },
+	    dayheader: {
+	      weekdays: [0, 1, 2, 3, 4, 5, 6],
+	      format: 'dddd',
+	      heightPx: 30
+	    },
+	    day: {
+	      format: 'DD/MM'
+	    }
+	  },
+	 
+	  // timestamp in the week to display
+	  unixTimestamp: moment().format('X'),
+	 
+	  // event options
+	  event: {
+	    hover: {
+	      delay: 200
+	    }
+	  },
+	 
+	  // custom colors
+	  colors: {
+	    // events: eventColors,
+	    // daynotes: daynoteColors,
+	    random: false
+	  },
+	 
+	  // category options
+	  categories: {
+	    enable: true,
+	    hover: {
+	      delay: 500
+	    }
+	  },
+	 
+	  // display the current time
+	  now: {
+	    enable: false,
+	    refresh: false,
+	    heightPx: 1,
+	    style: 'solid',
+	    color: '#03A9F4'
+	  }
+	   
+	}).init()
+})
+</script>
