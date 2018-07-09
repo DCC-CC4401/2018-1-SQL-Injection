@@ -13,7 +13,6 @@ class Profile(models.Model):
 
 
 class Admin(Profile):
-
     class Meta:
         verbose_name_plural = "Administradores"
 
@@ -36,13 +35,14 @@ class Item(models.Model):
 
     # reserves = models.SET(models.ForeignKey(Reserve, default=None, on_delete=models.CASCADE))
     class Meta:
-    #     abstract = True
+        #     abstract = True
         verbose_name_plural = "Items"
+
 
 
 class Object(models.Model):
     item = models.OneToOneField(Item, null=True, on_delete=models.CASCADE)
-    image = models.FileField(upload_to='inventario_cei/static/img/items/objects') # Overriding parent class attribute
+    image = models.FileField(upload_to='inventario_cei/static/img/items/objects')  # Overriding parent class attribute
     CONDITIONS = (
         ('d', 'Disponible'),
         ('p', 'En Préstamo'),
@@ -57,7 +57,7 @@ class Object(models.Model):
 
 class Space(models.Model):
     item = models.OneToOneField(Item, null=True, on_delete=models.CASCADE)
-    image = models.FileField(upload_to='inventario_cei/static/img/items/spaces') # Overriding parent class attribute
+    image = models.FileField(upload_to='inventario_cei/static/img/items/spaces')  # Overriding parent class attribute
     CONDITIONS = (
         ('d', 'Disponible'),
         ('p', 'En Préstamo'),
@@ -69,11 +69,12 @@ class Space(models.Model):
     class Meta:
         verbose_name_plural = "Espacios"
 
+
 class Reserve(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    
-    start = models.DateTimeField(auto_now_add=True)
+
+    start = models.DateTimeField()
     finish = models.DateTimeField()
     STATES = (
         ('a', 'Aceptada'),
@@ -86,10 +87,8 @@ class Reserve(models.Model):
     # object = models.ForeignKey(Object, null=True, on_delete=models.CASCADE)
     # space = models.ForeignKey(Space, null=True, on_delete=models.CASCADE)
 
-
     class Meta:
         verbose_name_plural = "Reservas"
-
 
 # TODO: deprecated, problem with primary key 'rut'
 # @receiver(post_save, sender=User)
@@ -101,4 +100,3 @@ class Reserve(models.Model):
 # @receiver(post_save, sender=User)
 # def save_user_profile(sender, instance, **kwargs):
 #     instance.profile.save()
-

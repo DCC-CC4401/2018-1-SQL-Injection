@@ -21,8 +21,8 @@ from .testdata import createClient,createHalls,createReservations
 # The next methods are created to test de data base
 def testdata(request):
     return JsonResponse(
-            {"items": list(Item.objects.values('id','name').distinct()), 
-            "spaces": list(Space.objects.values('id','item__name','item_id').distinct()), 
+            {"items": list(Item.objects.values('id','name').distinct()),
+            "spaces": list(Space.objects.values('id','item__name','item_id').distinct()),
             "users":list(User.objects.values('id','username').distinct()),
             'profile':list(Profile.objects.values('name','user_id','rut').distinct()),
             'reservations':list(Reserve.objects.values('item_id','user_id','start', 'finish').distinct())}
