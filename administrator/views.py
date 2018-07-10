@@ -11,6 +11,9 @@ from django.contrib.auth.models import User, Group
 def index(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect('/cei/login')
+
+    if not (request.user.groups.values_list('name',flat=True).first() == 'administrator_group'):
+        return HttpResponseRedirect('/cei/login')
     
     rooms = [MockSala(), MockSala(), MockSala(), MockSala()]
 
