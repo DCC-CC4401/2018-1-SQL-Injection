@@ -22,8 +22,10 @@ def index(request):
     #     'item__reserve__id', 'item__reserve__user__profile__name','item__reserve__user__profile__rut','item__name', 'item__description','item__reserve__start','item__reserve__finish').order_by('-item__reserve__created')
 
     weekReserves = Space.objects.values(
-        'item__reserve__id', 'item__reserve__user__profile__name', 'item__reserve__user__profile__rut', 'item__name',
-        'item__description', 'item__reserve__start', 'item__reserve__finish').order_by('-item__reserve__created')
+         'item__reserve__id', 'item__reserve__user__email', 'item__reserve__user__profile__name', 'item__reserve__user__profile__rut', 'item__name',
+         'item__description', 'item__reserve__start', 'item__reserve__finish', 'item__reserve__state').order_by('-item__reserve__created')
+
+    # weekReserves = Space.objects.order_by('-item__reserve__created')
 
     # Pending reserves
     pendingHeaders = ['Id', 'Usuario', 'Articulo', 'Fecha de prestamo', 'Fecha de solicitud']

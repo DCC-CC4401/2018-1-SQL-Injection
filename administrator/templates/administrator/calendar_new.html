@@ -1,5 +1,5 @@
 {% load static %}
-
+{% load cfilters %}
 <!-- <link rel="stylesheet" href="{% static 'calendar_jquery/jquery-calendar-bootstrap.min.css' %}"> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
@@ -55,6 +55,7 @@
 	}
 	 
 </style>
+
 <script>
 $(document).ready(function(){
 	
@@ -68,7 +69,11 @@ $(document).ready(function(){
 	    start: moment("{{ d.item__reserve__start|date:'Y-m-d H:i' }}").format('X'),
 			end: moment("{{ d.item__reserve__finish|date:'Y-m-d H:i' }}").format('X'),
 	    title: '{{d.item__name}}',
-			content: "<span>{{d.item__reserve__user__profile__name}}</span> <br/><span>RUT: {{d.item__reserve__user__profile__rut}}</span> <br/><p>{{d.description}}<p/>",
+			content: "<strong>{{d.item__reserve__user__profile__name}}</strong> \
+							<strong>{{d.item__reserve__user__email}}</strong> \
+							<br/><span>RUT: {{d.item__reserve__user__profile__rut}}</span> \
+							<br/><span>Estado: {{d.item__reserve__state | reserveState }}</span> \
+							<br/><p>{{d.description}}<p/>",
 	    category:'{{d.item__name}}'
 		},
 		// {% endfor %}
