@@ -1,0 +1,118 @@
+{# Load the tag library #}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+{% load bootstrap4 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% load static %}
+
+<style>
+html,body {
+  height: 100%;
+}
+
+body {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.btn-block {
+    margin-top: 10px
+}
+
+</style>
+
+<body class="text-center">
+    <form class="form-signin" method="POST" action="register" >
+        {% csrf_token %}
+        <img class="mb-4" src="{% static '/logo.png' %}" alt="" width="100" height="72">
+        <h1 class="h3 mb-3 font-weight-normal">Registrar</h1>
+        {% if error %}
+        <div class="alert alert-danger" role="alert">
+            <strong>Error: </strong>{{error}}
+        </div>
+        {%endif%}
+        {% if success %}
+        <div class="alert alert-success" role="alert">
+            <strong></strong>{{success}}
+        </div>
+        {%endif%}
+        <!-- nombre -->
+        <label for="inputName" class="sr-only">Nombre</label>
+        <input id="inputName" class="form-control" placeholder="Nombre" required="" autofocus="" type="text" name="name">
+
+        <!-- RUT -->
+        <label for="inputRut" class="sr-only">RUT</label>
+        <input id="inputRut" class="form-control" placeholder="RUT" required="" autofocus="" type="text" name="rut">
+
+        <!-- email -->
+        <label for="inputEmail" class="sr-only">Correo</label>
+        <input id="inputEmail" class="form-control" placeholder="Usuario" required="" autofocus="" type="email" name="email">
+        
+        <!-- password -->
+        <label for="inputPassword" class="sr-only">Contrase&ntilde;a</label>
+        <input id="inputPassword" class="form-control" placeholder="Contrase&ntilde;a" required="" type="password" name="password">
+
+        <label for="inputRePassword" class="sr-only">ReContrase&ntilde;a</label>
+        <input id="inputRePassword" class="form-control" placeholder="Repita Contrase&ntilde;a" required="" type="password" name="re_password">
+        
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Registrar</button>
+
+        <a class="btn btn-default" href="/cei/login" >Ingresar</a>
+
+        <p class="mt-5 mb-3 text-muted">©SQLInjection 2017-2018</p>
+    </form>
+</body>
+
+<script>
+var password = document.getElementById("inputPassword")
+  , confirm_password = document.getElementById("inputRePassword");
+
+function validatePassword(){
+  if(password.value != confirm_password.value) {
+    confirm_password.setCustomValidity("Contrasenas no coinciden");
+  } else {
+    confirm_password.setCustomValidity('');
+  }
+}
+
+password.onchange = validatePassword;
+confirm_password.onkeyup = validatePassword;
+</script>
+    
