@@ -1,16 +1,20 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
-from inventario_cei.models import Reserve
+from inventario_cei.models import Reserve, Space
 
 
 def index(request):
-    list = Reserve.objects.all() # need to select acording to the user logged in
-    context = {
-        'list': list.order_by('-start')[0:10]
-    }
-    template = loader.get_template('userprofile/index.html')
-    return HttpResponse(template.render(context, request))
+    if request.user.is_authenticated:
+        space = Space.objects.all()
+        list = Reserve.objects.filter(item__space__in=space).select_related()
+        context = {
+            'list': list.filter(user=request.user).order_by('-start')[0:10]
+        }
+        template = loader.get_template('userprofile/index.html')
+        return HttpResponse(template.render(context, request))
+    else:
+        return redirect('/cei/login')
 
 
 def delete(request):
@@ -21,9 +25,3 @@ def delete(request):
         return redirect('/userprofile')
     else:
         return render(request, 'userprofile/index.html')
-
-
-def administrator(request):
-    context = {'message': "Hello world!"}
-    template = loader.get_template('administrator/index.html')
-    return HttpResponse(template.render(context, request))

@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <section class="jumbotron text-center" style="padding-top: 40px; padding-bottom: 10px;">
+        <div class="container">
+            <h2 class="jumbotron-heading">Lista de Elementos</h2>
+            <p>
+                <a href="/objetos" class="btn {{ objects_style }} my-2">Objetos</a>
+                <a href="/espacios" class="btn {{ spaces_style }} my-2">Espacios</a>
+            </p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="row justify-content-center mb-4">
+            <div class="col-12">
+                <form method="get" action="/objetos/">
+                    <div class="form-group row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-7">
+                            <input placeholder="Ej: Parlante" name='search_terms' type="search"
+                                   class="shadow-sm form-control" style="width:100%">
+                        </div>
+                        <div class="col-sm-1">
+                            <button type="submit" class="btn btn-primary">Buscar</button>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" onclick="activar_parametros()" class="btn btn-light" role="button"
+                                    aria-pressed="true">Búsqueda Avanzada
+                            </button>
+                        </div>
+                    </div>
+                    <div id="busqueda_avanzada" style="display: none;margin-left: 15%;margin-right: 15%"
+                         class="border p-3 shadow mb-4">
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Id:</label>
+                            <input name='id' type="number" class="form-control" id="exampleFormControlInput1"
+                                   placeholder="Ej: 42">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Fecha Inicial:</label>
+                            <input name='ini' type="datetime-local" class="form-control" id="exampleFormControlInput1">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Fecha Final:</label>
+                            <input name='fin' type="datetime-local" class="form-control" id="exampleFormControlInput1">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">Estado</label>
+                            <select name='estado' class="form-control" id="exampleFormControlSelect1">
+                                <option value='t'>Todos</option>
+                                <option value='d'>Disponible</option>
+                                <option value='p'>En Préstamo</option>
+                                <option value='r'>En Reparación</option>
+                                <option value='l'>Perdido</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="margin-bottom: 7%; margin-left: 5%">
+        <div style="float: left;">
+            {% if made_search %}
+                <h3>Resultado de la búsqueda
+                    {% if search_terms != '' %} "{{ search_terms }}".{% endif %}
+                    {% if item_id != '' %}  id = {{ item_id }}.{% endif %}
+                </h3>
+            {% else %}
+                <h3>Todos los Items</h3>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="container">
+        <div class=" card-group row">
+            {% for i in items %}
+                <div class="col-md-3">
+                    <div class="card mb-3 box-shadow">
+                        <img class="card-img-top" src="{{ i.image.url|slice:"14:" }}" alt="Imagen de {{ i.item.name }}"
+                             style="height: 13rem;">
+                        <div class="card-body">
+                            <h4 class="card-title text-center">{{ i.item.name }}</h4>
+                        </div>
+                        {% if  i.condition == 'd' %}
+                            <div class="card-footer text-white bg-success">
+                                <h7>Disponible</h7>
+                            </div>
+                        {% elif  i.condition == 'p' %}
+                            <div class="card-footer text-white bg-info">
+                                <h7>En Préstamo</h7>
+                            </div>
+                        {% elif  i.condition == 'r' %}
+                            <div class="card-footer text-white bg-warning">
+                                <h7>En Reparación</h7>
+                            </div>
+                        {% elif  i.condition == 'l' %}
+                            <div class="card-footer text-white bg-danger">
+                                <h7>Perdido</h7>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script type="application/javascript">
+        $(document).ready(function () {
+            var max_height = 0;
+            var current_height;
+
+            $('.card-body').each(function (e) {
+                current_height = parseInt($(this).css('height'), 10);
+                if (current_height > max_height) max_height = current_height;
+            });
+
+            $('.card-body').each(function (e) {
+                $(this).css('height', max_height);
+            });
+        });
+    </script>
+
+    <script>
+        function activar_parametros() {
+            var estilo = document.getElementById('busqueda_avanzada').style.display;
+            if (estilo === '') {
+                document.getElementById('busqueda_avanzada').style.display = 'none';
+            } else {
+                document.getElementById('busqueda_avanzada').style.display = '';
+            }
+        }
+    </script>
+{% endblock %}
