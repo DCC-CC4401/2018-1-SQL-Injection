@@ -69,7 +69,8 @@ $(document).ready(function(){
 	    start: moment("{{ d.item__reserve__start|date:'Y-m-d H:i' }}").format('X'),
 			end: moment("{{ d.item__reserve__finish|date:'Y-m-d H:i' }}").format('X'),
 	    title: '{{d.item__name}}',
-			content: "<span>{{d.item__reserve__user__profile__name}}</span> \
+			content: "<strong>{{d.item__reserve__user__profile__name}}</strong> \
+							<strong>{{d.item__reserve__user__email}}</strong> \
 							<br/><span>RUT: {{d.item__reserve__user__profile__rut}}</span> \
 							<br/><span>Estado: {{d.item__reserve__state | reserveState }}</span> \
 							<br/><p>{{d.description}}<p/>",
