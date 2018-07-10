@@ -22,7 +22,7 @@ def createReservations(clients, halls):
         r = Reserve()
         r.user = clients[i].user
         r.item = halls[i].item
-        r.start = datetime.now()
+        r.start = datetime.now() 
         r.finish = datetime.now() + timedelta(hours=1)
         r.state = 'p'
         r.save()
