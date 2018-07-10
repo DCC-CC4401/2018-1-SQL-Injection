@@ -27,7 +27,7 @@
     <link rel="icon" href="{% static "/logo.png" %}">
 </head>
 
-<body>
+<body class="panel panel-default">
 {% block bootstrap4_content %}
     {# HEADER #}
     <header>
@@ -118,7 +118,7 @@
     <br><br>
 
     {# BODY #}
-    <main role="main">
+    <main role="main panel-body">
         {% block content %} {# this content is replaced #}{% endblock %}
     </main>
     {# TODO: FOOTER #}
