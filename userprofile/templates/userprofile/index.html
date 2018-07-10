@@ -27,70 +27,72 @@
     {% block content %}
 
     <br>
-    <div class="col-md-10 btn-holder">
-        <div class="col-md-5" style="float: left">
-            <button type="button" class="btn-big" onclick="location.href='/espacios'">Reserva tu Espacio</button>
+    <div class="container">
+        <div class="col-md-12 btn-holder">
+            <div class="col-md-6" style="float: left">
+                <button type="button" class="btn-big" onclick="location.href='/espacios'">Reserva tu Espacio</button>
+            </div>
+            <div class="col-md-6" style="float: right">
+                <button type="button" class="btn-big" onclick="location.href='/objetos'">Pide tu Artículo</button>
+            </div>
         </div>
-        <div class="col-md-5" style="float: right">
-            <button type="button" class="btn-big" onclick="location.href='/objetos'">Pide tu Artículo</button>
-        </div>
-    </div>
-    <div style="clear: both; margin-bottom: 3%"></div>
+        <div style="clear: both; margin-bottom: 3%"></div>
 
-    <div>
-        <div style='float: left;'>
-            <button type="button" class="btn btn-secundary" onclick="Hide_prestamo()">Reservas</button>
-            <button type="button" class="btn btn-secundary" onclick="Hide_reserva()">Préstamos</button>
+        <div>
+            <div style='float: left;'>
+                <button type="button" class="btn btn-secundary" onclick="Hide_prestamo()">Reservas</button>
+                <button type="button" class="btn btn-secundary" onclick="Hide_reserva()">Préstamos</button>
+            </div>
+            <div style='float: right;'>
+                <i class="fa fa-trash"></i>
+                <button type="submit" class="btn-name" form="delete-form">Eliminar seleccionados</button>
+            </div>
         </div>
-        <div style='float: right;'>
-            <i class="fa fa-trash"></i>
-            <button type="submit" class="btn-name" form="delete-form">Eliminar seleccionados</button>
-        </div>
-    </div>
-    <div style="clear: both;"></div>
+        <div style="clear: both;"></div>
 
-    <div class="row" style="margin-bottom: 5%" id="reservas">
-        <div class="col-md-6">
-            <form id="delete-form" method="post" action="{% url 'delete' %}">
-            {% csrf_token %}
-            {% for l in list %}
-            <div class="row">
-            <div class="col-1 col-xs-2 text-xs-center">
-                {% if l.state == 'p' %}
-                    <label class="btn btn-link text-xs-center"><input type="checkbox" name="l_id" value="{{ l.id }}"></label>
-                {% endif %}
-            </div>
-            <div class="col">
-                <button type="button" id="list-{{ l.id }}" class="list-group-item list-group-item-action" onclick="Show_info({{ l.id }})">
-                    {{ l.item.name }}
-                    <p class="badge badge-secondary" style="float: right;">{{ l.get_state_display }}</p>
-                    <div style="clear: both;"></div>
-                </button>
-            </div>
-            </div>
-            </form>
-            {% endfor %}
-        </div>
-        <div class="col-md-6">
-            {% for l in list %}
-            <div style="display: none" id="{{ l.id }}">
-                <h2>{{ l.item.name }}</h2>
-                <h5>{{ l.get_state_display }}</h5>
-                <p>{{ l.item.description }}</p>
-                <P>Fecha de inicio: {{ l.start }}</P>
-                <p>Fecha de término: {{ l.finish }}</p>
-                <form id="article_post_{{ i.id }}" method="post" action="{% url 'administrator' %}">
-                    {% csrf_token %}
-                    <label><input name="article_id" value="{{ l.item.id }}" hidden></label>
-                    <label><input name="article_type" value="space" hidden></label>
-                    <button type="submit" class="btn btn-link">Ver más detalles</button>
+        <div class="row" style="margin-bottom: 5%" id="reservas">
+            <div class="col-md-6">
+                <form id="delete-form" method="post" action="{% url 'delete' %}">
+                {% csrf_token %}
+                {% for l in list %}
+                <div class="row">
+                <div class="col-1 col-xs-2 text-xs-center">
+                    {% if l.state == 'p' %}
+                        <label class="btn btn-link text-xs-center"><input type="checkbox" name="l_id" value="{{ l.id }}"></label>
+                    {% endif %}
+                </div>
+                <div class="col">
+                    <button type="button" id="list-{{ l.id }}" class="list-group-item list-group-item-action" onclick="Show_info({{ l.id }})">
+                        {{ l.item.name }}
+                        <p class="badge badge-secondary" style="float: right;">{{ l.get_state_display }}</p>
+                        <div style="clear: both;"></div>
+                    </button>
+                </div>
+                </div>
                 </form>
+                {% endfor %}
             </div>
-            {% endfor %}
+            <div class="col-md-6">
+                {% for l in list %}
+                <div style="display: none" id="{{ l.id }}">
+                    <h2>{{ l.item.name }}</h2>
+                    <h5>{{ l.get_state_display }}</h5>
+                    <p>{{ l.item.description }}</p>
+                    <P>Fecha de inicio: {{ l.start }}</P>
+                    <p>Fecha de término: {{ l.finish }}</p>
+                    <form id="article_post_{{ i.id }}" method="post" action="{% url 'administrator' %}">
+                        {% csrf_token %}
+                        <label><input name="article_id" value="{{ l.item.id }}" hidden></label>
+                        <label><input name="article_type" value="space" hidden></label>
+                        <button type="submit" class="btn btn-link">Ver más detalles</button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
         </div>
-    </div>
 
-    <div style="margin-bottom: 5%" id="prestamos"></div>
+        <div style="margin-bottom: 5%" id="prestamos"></div>
+    </div>
 
     <script>
         function Show_info(id) {
