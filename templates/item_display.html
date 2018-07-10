@@ -77,8 +77,15 @@
     <div class="container">
         <div class=" card-group row">
             {% for i in items %}
+                <div style="display: none;">
+                    <form id="article_post_{{ i.id }}" method="post" action="{% url 'article_sheet' %}">
+                        {% csrf_token %}
+                        <input name="article_id" value="{{ i.id }}">
+                        <input name="article_type_style" value="{{ objects_style }}">
+                    </form>
+                </div>
                 <div class="col-md-3">
-                    <div class="card mb-3 box-shadow">
+                    <div class="card mb-3 box-shadow" style="cursor: pointer;" href="javascript:{}" onclick="document.getElementById('article_post_{{ i.id }}').submit(); return false;">
                         <img class="card-img-top" src="{{ i.image.url|slice:"14:" }}" alt="Imagen de {{ i.item.name }}"
                              style="height: 13rem;">
                         <div class="card-body">
