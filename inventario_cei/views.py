@@ -25,7 +25,7 @@ def objects(request):
         'objects_style': 'btn-success',
         'spaces_style': 'btn-secondary',
     }
-    template = loader.get_template('items_display.html')
+    template = loader.get_template('item_display.html')
 
     return HttpResponse(template.render(context, request))
 
@@ -37,7 +37,7 @@ def spaces(request):
         'objects_style': 'btn-secondary',
         'spaces_style': 'btn-success',
     }
-    template = loader.get_template('items_display.html')
+    template = loader.get_template('item_display.html')
 
     return HttpResponse(template.render(context, request))
 

@@ -5,8 +5,8 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('index', views.index, name='home'),
-    path('objetos', views.objects, name='objetos'),
-    path('espacios', views.spaces, name='espacios'),
+    path('objetos', views.objects, name='objects'),
+    path('espacios', views.spaces, name='spaces'),
     path('ficha_articulo', views.article_sheet, name='article_sheet'),
 
     # long
