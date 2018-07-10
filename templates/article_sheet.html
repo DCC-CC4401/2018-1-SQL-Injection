@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <section style="padding-top: 40px; padding-bottom: 10px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>{{ article.item.name }}
+                                {% if article.condition == 'd' %}
+                                    <button class=" btn btn-success active"><i class="fas fa-angle-left"></i> Disponible</button>
+                                {% endif %}
+                            </h3>
+                        </div>
+                        <img class="card-img-top" src="{{ article.image.url|slice:"14:" }}" alt="Imagen de {{ article.item.name }}">
+                        <div class="card-body">
+                            <p class="card-text">{{ article.item.description }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <ul class="list-group">
+                        {% if article.condition == 'd' %}
+                        <li class="list-group-item">
+                            <div>
+                                <h5 class="text-center">Solicitar Reserva</h5>
+                            </div>
+                        </li>
+                        {% endif %}
+
+                        <li class="list-group-item">
+                            <div>
+                                {% if reserves_history %}
+                                <h5 class="text-center">Historial de Reservas</h5>
+                                {% else %}
+                                <h5 class="text-center">Historial de Reservas vacío</h5>
+                                {% endif %}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+              </div>
+        </div>
+    </section>
+{% endblock %}

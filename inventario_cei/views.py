@@ -100,7 +100,7 @@ def spaces(request):
 
     weekReserves = Space.objects.values(
         'item__reserve__id', 'item__reserve__user__profile__name', 'item__reserve__user__profile__rut', 'item__name',
-        'item__description', 'item__reserve__start', 'item__reserve__finish').order_by('-item__reserve__created')
+        'item__description', 'item__reserve__start', 'item__reserve__finish', 'item__reserve__state').order_by('-item__reserve__created')
 
     # Pending reserves
     pendingHeaders = ['Id', 'Usuario', 'Articulo', 'Fecha de prestamo', 'Fecha de solicitud']
@@ -126,6 +126,32 @@ def spaces(request):
                }
     template = loader.get_template('calendar_user.html')
     return HttpResponse(template.render(context, request))
+
+
+def article_sheet(request):
+    if request.method == 'POST':
+        article_id = request.POST.get('article_id')
+        article_type_style = request.POST.get('article_type_style')
+        if article_type_style:
+            article_is_object = "success" in article_type_style
+        else:
+            article_is_object = "object" in request.POST.get('article_type')
+
+        if article_is_object:
+            article = Object.objects.get(id=article_id)
+
+        else:
+            article = Space.objects.get(id=article_id)
+
+        reserves_history = None
+
+        context = {
+            'article': article,
+            'reserves_history': reserves_history,
+        }
+
+        template = loader.get_template('article_sheet.html')
+        return HttpResponse(template.render(context, request))
 
 
 # register 
@@ -182,11 +208,14 @@ def handleRegister(request):
         # success
         context = {'success': 'Usuario "%s" exitosamente registrado' %email }
         template = loader.get_template('register.html')
+
         return HttpResponse(template.render(context, request))
+
     else:
         # error
         context = {'error': 'Un error inesperado ha sucedido'}
         template = loader.get_template('register.html')
+
         return HttpResponse(template.render(context, request))
 
 
