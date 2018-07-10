@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
-from inventario_cei.models import Reserve, Space, Item
+from inventario_cei.models import Reserve, Space
 
 
 def index(request):
@@ -14,8 +14,8 @@ def index(request):
         template = loader.get_template('userprofile/index.html')
         return HttpResponse(template.render(context, request))
     else:
-        template = loader.get_template('administrator')
-        return HttpResponse(template.render(request))
+        return redirect('/cei/login')
+
 
 def delete(request):
     if request.method == 'POST':
@@ -25,9 +25,3 @@ def delete(request):
         return redirect('/userprofile')
     else:
         return render(request, 'userprofile/index.html')
-
-
-def administrator(request):
-    context = {'message': "Hello world!"}
-    template = loader.get_template('administrator/index.html')
-    return HttpResponse(template.render(context, request))

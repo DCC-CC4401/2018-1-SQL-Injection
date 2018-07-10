@@ -26,12 +26,13 @@
 
     {% block content %}
 
-    <div class="col-md-12 btn-holder">
-        <div class="col-md-6" style="float: left">
-            <button type="button" class="btn-big" onclick="location.href='{% url 'administrator' %}'">Reserva tu Espacio</button>
+    <br>
+    <div class="col-md-10 btn-holder">
+        <div class="col-md-5" style="float: left">
+            <button type="button" class="btn-big" onclick="location.href='/espacios'">Reserva tu Espacio</button>
         </div>
-        <div class="col-md-6" style="float: right">
-            <button type="button" class="btn-big" onclick="location.href='{% url 'administrator' %}'">Pide tu Artículo</button>
+        <div class="col-md-5" style="float: right">
+            <button type="button" class="btn-big" onclick="location.href='/objetos'">Pide tu Artículo</button>
         </div>
     </div>
     <div style="clear: both; margin-bottom: 3%"></div>
