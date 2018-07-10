@@ -5,8 +5,8 @@
         <div class="container">
             <h2 class="jumbotron-heading">Espacios</h2>
             <p>
-                <a href="/objetos" class="btn {{ objects_style }} my-2">Objetos</a>
-                <a href="/spaces" class="btn {{ spaces_style }} my-2">Espacios</a>
+                <a href="{% url 'search_item' %}" class="btn {{ objects_style }} my-2">Objetos</a>
+                <a href="{% url 'spaces' %}" class="btn {{ spaces_style }} my-2">Espacios</a>
             </p>
         </div>
     </section>

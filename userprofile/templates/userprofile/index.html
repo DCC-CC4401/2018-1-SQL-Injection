@@ -30,10 +30,10 @@
     <div class="container">
         <div class="col-md-12 btn-holder">
             <div class="col-md-6" style="float: left">
-                <button type="button" class="btn-big" onclick="location.href='/spaces'">Reserva tu Espacio</button>
+                <button type="button" class="btn-big" onclick="location.href='{% url "spaces" %}'">Reserva tu Espacio</button>
             </div>
             <div class="col-md-6" style="float: right">
-                <button type="button" class="btn-big" onclick="location.href='/objetos'">Pide tu Artículo</button>
+                <button type="button" class="btn-big" onclick="location.href='{% url "search_item" %}'">Pide tu Artículo</button>
             </div>
         </div>
         <div style="clear: both; margin-bottom: 3%"></div>
