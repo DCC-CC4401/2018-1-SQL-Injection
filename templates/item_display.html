@@ -79,10 +79,10 @@
             {% for i in items %}
                 <div class="col-md-3">
                     <div class="card mb-3 box-shadow">
-                        <img class="card-img-top" src="{{ i.image.url|slice:"14:" }}" alt="Imagen de {{ i.name }}"
+                        <img class="card-img-top" src="{{ i.image.url|slice:"14:" }}" alt="Imagen de {{ i.item.name }}"
                              style="height: 13rem;">
                         <div class="card-body">
-                            <h4 class="card-title text-center">{{ i.name }}</h4>
+                            <h4 class="card-title text-center">{{ i.item.name }}</h4>
                         </div>
                         {% if  i.condition == 'd' %}
                             <div class="card-footer text-white bg-success">
@@ -116,8 +116,6 @@
                 current_height = parseInt($(this).css('height'), 10);
                 if (current_height > max_height) max_height = current_height;
             });
-
-            console.log(max_height);
 
             $('.card-body').each(function (e) {
                 $(this).css('height', max_height);

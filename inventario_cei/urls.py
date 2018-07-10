@@ -1,4 +1,4 @@
-from django.urls import path,re_path
+from django.urls import path, re_path
 
 from . import views
 
@@ -13,6 +13,6 @@ urlpatterns = [
 
     # helping urls
     path('testdata', views.testdata, name='testdata'),
-    path('createtestdata', views.createtestdata, name='createtestdata')
-    re_path(r'^objetos/$',views.objects, name='search_item')
+    path('createtestdata', views.createtestdata, name='createtestdata'),
+    re_path(r'^objetos/$', views.objects, name='search_item')
 ]

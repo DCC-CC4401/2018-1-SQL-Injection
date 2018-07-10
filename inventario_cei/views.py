@@ -1,9 +1,8 @@
 from django.template import loader
-from django.http import HttpResponse,JsonResponse,HttpResponseRedirect
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 
-
-from .models import Object, Space, Reserve
+from .models import Object, Space, Reserve, Item
 from django.utils.dateparse import parse_datetime
 from datetime import datetime
 import datetime
@@ -27,7 +26,7 @@ def objects(request):
     if search_terms is None or search_terms == '':
         items = Object.objects.all()
     else:
-        items = Object.objects.filter(name__icontains=search_terms)
+        items = Object.objects.filter(item__name__icontains=search_terms)
         made_search = True
     # id
     item_id = request.GET.get('id')
@@ -36,14 +35,14 @@ def objects(request):
     else:
         items = items.filter(id=item_id)
         made_search = True
-    #estado
+    # estado
     estado = request.GET.get('estado')
     if estado is None or estado not in ['d', 'p', 'r', 'l']:
         pass
     else:
         items = items.filter(condition=estado)
         made_search = True
-    #tiempo
+    # tiempo
 
     fin = request.GET.get('fin')
     ini = request.GET.get('ini')
@@ -61,14 +60,16 @@ def objects(request):
     else:
         made_search = True
         reservas_dentro_del_rango = Reserve.objects.all()
-        reservas_dentro_del_rango = reservas_dentro_del_rango.filter(start__range=[datetime_ini, datetime_fin]).filter(finish__range=[datetime_ini, datetime_fin])
+        reservas_dentro_del_rango = reservas_dentro_del_rango.filter(start__range=[datetime_ini, datetime_fin]).filter(
+            finish__range=[datetime_ini, datetime_fin])
         reservas_dentro_del_rango_por_fuera = Reserve.objects.all()
-        reservas_dentro_del_rango_por_fuera = reservas_dentro_del_rango_por_fuera.filter(start__lt=datetime_ini).filter(finish__gt=datetime_fin)
+        reservas_dentro_del_rango_por_fuera = reservas_dentro_del_rango_por_fuera.filter(start__lt=datetime_ini).filter(
+            finish__gt=datetime_fin)
         reservas_dentro_del_rango.values()
 
     context = {
         'search_terms': search_terms,
-        'item_state' : estado,
+        'item_state': estado,
         'item_id': item_id,
         'made_search': made_search,
         'items': items,
@@ -131,25 +132,25 @@ def testdata(request):
     start_week = today - datetime.timedelta(today.weekday())
     end_week = start_week + datetime.timedelta(7)
     return JsonResponse(
-            {
-                # 'items': list(Item.objects.values('id', 'name').distinct()),
-                # 'spaces': list(Space.objects.values('id', 'item__name', 'item_id').distinct()),
-                # 'users': list(User.objects.values('id', 'username').distinct()),
-                # 'profile': list(Profile.objects.values('name', 'user_id', 'rut').distinct()),
-                # 'reservations': list(Reserve.objects.values('item_id', 'user_id', 'start', 'finish').distinct())},
+        {
+            # 'items': list(Item.objects.values('id', 'name').distinct()),
+            # 'spaces': list(Space.objects.values('id', 'item__name', 'item_id').distinct()),
+            # 'users': list(User.objects.values('id', 'username').distinct()),
+            # 'profile': list(Profile.objects.values('name', 'user_id', 'rut').distinct()),
+            # 'reservations': list(Reserve.objects.values('item_id', 'user_id', 'start', 'finish').distinct())},
 
-                'start_week': start_week,
-                'end_week': end_week,
-                'spaces': list(Space.objects.filter(item__reserve__start__range=[start_week, end_week]).values(
-                    'item__reserve__id',
-                    'item__reserve__user__username',
-                    'item__name',
-                    'item__reserve__start',
-                    'item__reserve__finish').order_by('-item__reserve__created')
-                ),
-                'spaces_all': list(Space.objects.values('id', 'item__reserve__start').distinct()),
-            },
-            safe=False)
+            'start_week': start_week,
+            'end_week': end_week,
+            'spaces': list(Space.objects.filter(item__reserve__start__range=[start_week, end_week]).values(
+                'item__reserve__id',
+                'item__reserve__user__username',
+                'item__name',
+                'item__reserve__start',
+                'item__reserve__finish').order_by('-item__reserve__created')
+                           ),
+            'spaces_all': list(Space.objects.values('id', 'item__reserve__start').distinct()),
+        },
+        safe=False)
 
 
 def createtestdata(request):
