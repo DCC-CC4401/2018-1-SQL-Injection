@@ -7,9 +7,12 @@ from django.utils.dateparse import parse_datetime
 from datetime import datetime
 import datetime
 
+
+from django.contrib.auth.models import User, Group
+
 from inventario_cei.models import Object, Space
 
-from .testdata import createClient, createReservations, createObjects
+from .testdata import createClient,createHalls,createReservations,createObjects
 
 
 def index(request):
@@ -67,6 +70,7 @@ def objects(request):
             finish__gt=datetime_fin)
         reservas_dentro_del_rango.values()
 
+
     context = {
         'search_terms': search_terms,
         'item_state': estado,
@@ -120,6 +124,68 @@ def spaces(request):
     return HttpResponse(template.render(context, request))
 
 
+# register 
+def handleRegister(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('/userprofile')
+
+    context = {}
+    if request.method == 'GET':
+        template = loader.get_template('register.html')
+        return HttpResponse(template.render(context, request))
+
+    if request.method != 'POST':
+        return HttpResponseRedirect('/cei/register')
+
+    name = request.POST['name']
+    rut = request.POST['rut']
+    email = request.POST['email']
+    password = request.POST['password']
+    re_password = request.POST['re_password']
+
+    if password != re_password: 
+        context = {'error': 'Contrase&ntilde;as no coinciden'}
+        template = loader.get_template('register.html')
+        return HttpResponse(template.render(context, request))
+
+
+    if User.objects.filter(username=email).exists():
+        context = {'error': 'Usuario "%s" ya existe' %email }
+        template = loader.get_template('register.html')
+        return HttpResponse(template.render(context, request))
+
+    
+    user, created = User.objects.get_or_create(
+                            username=email,
+                            email=email
+                        )
+
+
+    if created:
+        profile = Profile()
+        user.set_password(password)
+        user.save()
+
+        profile.user = user
+        profile.name = name
+        profile.rut = rut
+        profile.mail = email
+        profile.save()
+        
+        client_group, created = Group.objects.get_or_create(name='client_group')
+        client_group.user_set.add(user)
+
+        # success
+        context = {'success': 'Usuario "%s" exitosamente registrado' %email }
+        template = loader.get_template('register.html')
+        return HttpResponse(template.render(context, request))
+    else:
+        # error
+        context = {'error': 'Un error inesperado ha sucedido'}
+        template = loader.get_template('register.html')
+        return HttpResponse(template.render(context, request))
+
+
 # login
 def handleLogin(request):
     if request.user.is_authenticated:
@@ -143,12 +209,12 @@ def handleLogin(request):
         context = {'error': 'Credenciales Invalidas'}
         template = loader.get_template('login.html')
         return HttpResponse(template.render(context, request))
-
-
+        
+# logout
 def handleLogout(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect('/userprofile')
-
+    
     logout(request)
     return HttpResponseRedirect('/cei/login')
 

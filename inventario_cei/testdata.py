@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from datetime import datetime, timedelta,date
 import json
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 
 from inventario_cei.models import Item
 from inventario_cei.models import Space
@@ -33,9 +33,9 @@ def createReservations(clients, halls):
 
 def createClient():
     data = [
-        {'rut': 987654331, 'username': 'bart', 'email': 'bart@simpson.net', 'password':'12345678', 'name': 'bart simpson'},
-        {'rut': 387654322, 'username': 'lisa', 'email': 'lisa@simpson.net', 'password':'12345678', 'name': 'bart simpson'},
-        {'rut': 487654313, 'username': 'milhouse', 'email': 'milhouse@simpson.net', 'password':'12345678', 'name': 'bart simpson'},
+        {'rut': 987654331, 'username': 'bart@simpson.net', 'email': 'bart@simpson.net', 'password':'12345678', 'name': 'bart simpson'},
+        {'rut': 387654322, 'username': 'lisa@simpson.net', 'email': 'lisa@simpson.net', 'password':'12345678', 'name': 'bart simpson'},
+        {'rut': 487654313, 'username': 'milhouse@simpson.net', 'email': 'milhouse@simpson.net', 'password':'12345678', 'name': 'bart simpson'},
     ]
     datas = []
     for d in data: 
@@ -55,7 +55,9 @@ def createClient():
             profile.save()
         else:
             profile = user.profile
-        
+
+        administrator_group, created = Group.objects.get_or_create(name='administrator_group')
+        administrator_group.user_set.add(user)
         datas.append(profile)
 
     return datas
