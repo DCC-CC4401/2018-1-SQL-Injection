@@ -139,7 +139,7 @@ def article_sheet(request):
         else:
             article = Space.objects.get(id=article_id)
 
-        reserves_history = None
+        reserves_history = Reserve.objects.filter(item=article.item)
 
         context = {
             'article': article,

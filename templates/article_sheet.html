@@ -33,6 +33,11 @@
                             <div>
                                 {% if reserves_history %}
                                 <h5 class="text-center">Historial de Reservas</h5>
+                                <ul class="list-group">
+                                    {% for reserve in reserves_history %}
+                                    <li class="list-group-item">{{ reserve.start }} - {{ reserve.finish }}</li>
+                                    {%  endfor %}
+                                </ul>
                                 {% else %}
                                 <h5 class="text-center">Historial de Reservas vacío</h5>
                                 {% endif %}
