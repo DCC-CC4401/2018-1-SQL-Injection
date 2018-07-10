@@ -7,7 +7,11 @@ from inventario_cei.models import Object
 from inventario_cei.models import Space
 from inventario_cei.models import Reserve
 
+from django.contrib.auth.models import User, Group
+
 def index(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/cei/login')
     
     rooms = [MockSala(), MockSala(), MockSala(), MockSala()]
 
@@ -31,7 +35,9 @@ def index(request):
     lendings = Object.objects.filter(item__reserve__state='a').values(
         'item__reserve__id', 'item__reserve__user__username','item__name','item__reserve__start','item__reserve__finish','condition').order_by('-item__reserve__updated')
 
-    context = {'message' : "Hello world!",
+
+    context = { 
+                'user_group' : request.user.groups.values_list('name',flat=True).first(),
                 'weekReserves':weekReserves,
                 'pendingHeaders': pendingHeaders,
                 'pendings': list(pending),

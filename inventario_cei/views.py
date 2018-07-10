@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 import json
 import datetime
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 from inventario_cei.models import Item
 from inventario_cei.models import Space
@@ -17,6 +17,7 @@ from inventario_cei.models import Object
 from inventario_cei.models import Client
 from inventario_cei.models import Reserve
 from inventario_cei.models import Profile
+
 
 from .testdata import createClient,createHalls,createReservations,createObjects
 
@@ -61,11 +62,16 @@ def handleRegister(request):
         profile = Profile()
         user.set_password(password)
         user.save()
+
         profile.user = user
         profile.name = name
         profile.rut = rut
         profile.mail = email
         profile.save()
+        
+        client_group, created = Group.objects.get_or_create(name='client_group')
+        client_group.user_set.add(user)
+
         # success
         context = {'success': 'Usuario "%s" exitosamente registrado' %email }
         template = loader.get_template('register.html')

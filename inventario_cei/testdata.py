@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from datetime import datetime, timedelta,date
 import json
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 
 from inventario_cei.models import Item
 from inventario_cei.models import Space
@@ -55,7 +55,9 @@ def createClient():
             profile.save()
         else:
             profile = user.profile
-        
+
+        administrator_group, created = Group.objects.get_or_create(name='administrator_group')
+        administrator_group.user_set.add(user)
         datas.append(profile)
 
     return datas

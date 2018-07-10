@@ -57,6 +57,19 @@
 
           <!-- Bootstrap 4: Desktop/Mobile display behaviour -->
           <!-- https://stackoverflow.com/a/45842581 -->
+          
+          {% if user.groups.all.0.name == "administrator_group" %}
+            <span style="font-size: 17px; color: Dodgerblue;margin:8px">
+              Administrador
+            </span>
+          {% endif %}
+
+          {% if user.groups.all.0.name == "client_group" %}
+            <span style="font-size: 17px; color: Dodgerblue;margin:8px">
+              Estudiante
+            </span>
+          {% endif %}
+          
           <div class="dropdown d-none d-sm-block">  <!-- Visible only in Desktop view -->
             <button class="btn border-0 btn-outline-secondary btn-sm dropdown-toggle" type="button" id="userDropdownMenuDesktop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <a class="" style="text-decoration: none;" href="#">
