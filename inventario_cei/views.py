@@ -81,14 +81,42 @@ def objects(request):
 
 
 def spaces(request):
-    items = Space.objects.all()
-    context = {
-        'items': items,
-        'objects_style': 'btn-secondary',
-        'spaces_style': 'btn-success',
-    }
-    template = loader.get_template('item_display.html')
+    rooms = [MockSala(), MockSala(), MockSala(), MockSala()]
 
+    # all week reserves
+    today = datetime.date.today()
+    start_week = today - datetime.timedelta(today.weekday())
+    end_week = start_week + datetime.timedelta(7)
+    # weekReserves = Space.objects.filter(item__reserve__start__range=[start_week, end_week]).values(
+    #     'item__reserve__id', 'item__reserve__user__profile__name','item__reserve__user__profile__rut','item__name', 'item__description','item__reserve__start','item__reserve__finish').order_by('-item__reserve__created')
+
+    weekReserves = Space.objects.values(
+        'item__reserve__id', 'item__reserve__user__profile__name', 'item__reserve__user__profile__rut', 'item__name',
+        'item__description', 'item__reserve__start', 'item__reserve__finish').order_by('-item__reserve__created')
+
+    # Pending reserves
+    pendingHeaders = ['Id', 'Usuario', 'Articulo', 'Fecha de prestamo', 'Fecha de solicitud']
+    pending = Object.objects.filter(item__reserve__state='p').values(
+        'item__reserve__id', 'item__reserve__user__username', 'item__name', 'item__reserve__start',
+        'item__reserve__finish').order_by('-item__reserve__created')
+
+    # Lending
+    lendingHeaders = ['Id', 'Usuario', 'Articulo', 'Fecha de prestamo', 'Fecha de solicitud']
+    lendings = Object.objects.filter(item__reserve__state='a').values(
+        'item__reserve__id', 'item__reserve__user__username', 'item__name', 'item__reserve__start',
+        'item__reserve__finish', 'condition').order_by('-item__reserve__updated')
+
+    context = {'message': "Hello world!",
+               'weekReserves': weekReserves,
+               'pendingHeaders': pendingHeaders,
+               'pendings': list(pending),
+               'lendingHeaders': lendingHeaders,
+               'lendings': list(lendings),
+               'rooms': rooms,
+               'objects_style': 'btn-secondary',
+               'spaces_style': 'btn-success'
+               }
+    template = loader.get_template('calendar_user.html')
     return HttpResponse(template.render(context, request))
 
 
@@ -158,3 +186,7 @@ def createtestdata(request):
     objects = createObjects()
     reservations = createReservations(clients, objects)
     return JsonResponse({'result': 'successfully completed!'}, safe=False)
+
+class MockSala:
+    id = 1
+    name = 'Sala #'

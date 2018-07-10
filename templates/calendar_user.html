@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <section class="jumbotron text-center" style="padding-top: 40px; padding-bottom: 10px;">
+        <div class="container">
+            <h2 class="jumbotron-heading">Espacios</h2>
+            <p>
+                <a href="/objetos" class="btn {{ objects_style }} my-2">Objetos</a>
+                <a href="/espacios" class="btn {{ spaces_style }} my-2">Espacios</a>
+            </p>
+        </div>
+    </section>
+
+    <div class="container">
+    </div>
+    <style>
+        .adm-cal-container {
+            margin: 10px
+        }
+
+        .icon-actions {
+            width: 19pt;
+            cursor: pointer;
+        }
+
+        .button-transparent {
+            /* background-image: url("
+        {% static '/icons8-cancel-48.png' %} "); */
+            background-position: center center;
+            border: none;
+            background: none;
+            margin: 2px
+        }
+
+        .selectable-actions {
+            align-content: right;
+        }
+
+        .adm-lend-filters {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .adm-lend-filters .list-group-item {
+            padding: 5px;
+        }
+
+        /* .list-group-horizontal .list-group-item {
+            display: inline-block;
+        }
+        .list-group-horizontal .list-group-item {
+            margin-bottom: 0;
+            margin-left:-4px;
+            margin-right: 0;
+        }
+        .list-group-horizontal .list-group-item:first-child {
+            border-top-right-radius:0;
+            border-bottom-left-radius:4px;
+        }
+        .list-group-horizontal .list-group-item:last-child {
+            border-top-right-radius:4px;
+            border-bottom-left-radius:0;
+        } */
+
+
+    </style>
+
+    <!--         Calendar           -->
+    <div class="row adm-cal-container">
+        {% include 'administrator/calendar_new.html' %}
+    </div>
+    {% endblock %}
