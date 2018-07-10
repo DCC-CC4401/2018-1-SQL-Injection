@@ -2,7 +2,7 @@ from django.template import loader
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 
-from .models import Object, Space, Reserve, Item
+from .models import Object, Space, Reserve, Item, Profile
 from django.utils.dateparse import parse_datetime
 from datetime import datetime
 import datetime
@@ -16,6 +16,8 @@ from .testdata import createClient,createHalls,createReservations,createObjects
 
 
 def index(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/cei/login')
     context = {}
     template = loader.get_template('index.html')
 
@@ -23,6 +25,8 @@ def index(request):
 
 
 def objects(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/cei/login')
     made_search = False
     # nombre
     search_terms = request.GET.get('search_terms')
