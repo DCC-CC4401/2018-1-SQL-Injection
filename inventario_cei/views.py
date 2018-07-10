@@ -10,7 +10,7 @@ import datetime
 
 from django.contrib.auth.models import User, Group
 
-from inventario_cei.models import Object, Space
+from inventario_cei.models import Object, Space, Profile
 
 from .testdata import createClient,createHalls,createReservations,createObjects
 
@@ -222,7 +222,11 @@ def handleRegister(request):
 # login
 def handleLogin(request):
     if request.user.is_authenticated:
-        return HttpResponseRedirect('/userprofile')
+        if request.user.groups.values_list('name',flat=True).first() == 'administrator_group':
+            return HttpResponseRedirect('/administrator')
+        else: 
+            return HttpResponseRedirect('/userprofile')
+
 
     context = {}
     if request.method == 'GET':
@@ -237,7 +241,11 @@ def handleLogin(request):
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
-        return HttpResponseRedirect('/userprofile')
+        if request.user.groups.values_list('name',flat=True).first() == 'administrator_group':
+            return HttpResponseRedirect('/administrator')
+        else: 
+            return HttpResponseRedirect('/userprofile')
+
     else:
         context = {'error': 'Credenciales Invalidas'}
         template = loader.get_template('login.html')
