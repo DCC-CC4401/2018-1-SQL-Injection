@@ -37,12 +37,16 @@ def objects(request):
         items = items.filter(condition=estado)
         made_search = True
     #tiempo
+
     fin = request.GET.get('fin')
     ini = request.GET.get('ini')
     try:
         datetime_fin = parse_datetime(fin)
         datetime_ini = parse_datetime(ini)
     except ValueError:
+        datetime_fin = None
+        datetime_ini = None
+    except TypeError:
         datetime_fin = None
         datetime_ini = None
     if datetime_ini is None or datetime_fin is None or (datetime_fin < datetime_ini):
@@ -58,8 +62,6 @@ def objects(request):
     context = {
         'search_terms': search_terms,
         'item_state' : estado,
-        'datetime_ini' : datetime_ini,
-        'datetime_fin' : datetime_fin,
         'item_id': item_id,
         'made_search': made_search,
         'items': items,
