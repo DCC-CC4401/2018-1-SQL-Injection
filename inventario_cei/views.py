@@ -42,6 +42,33 @@ def spaces(request):
     return HttpResponse(template.render(context, request))
 
 
+def article_sheet(request):
+    if request.method == 'POST':
+        article_id = request.POST.get('article_id')
+        article_type_style = request.POST.get('article_type_style')
+        if article_type_style:
+            article_is_object = "success" in article_type_style
+        else:
+            article_is_object = "object" in request.POST.get('article_type')
+
+        if article_is_object:
+            article = Object.objects.get(id=article_id)
+
+        else:
+            article = Space.objects.get(id=article_id)
+
+        reserves_history = None
+
+        context = {
+            'article': article,
+            'reserves_history': reserves_history,
+        }
+
+        template = loader.get_template('article_sheet.html')
+
+        return HttpResponse(template.render(context, request))
+
+
 # login
 def handleLogin(request):
     if request.user.is_authenticated:

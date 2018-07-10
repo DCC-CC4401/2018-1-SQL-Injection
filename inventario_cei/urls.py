@@ -7,6 +7,7 @@ urlpatterns = [
     path('index', views.index, name='home'),
     path('objetos', views.objects, name='objetos'),
     path('espacios', views.spaces, name='espacios'),
+    path('ficha_articulo', views.article_sheet, name='article_sheet'),
 
     # long
     path('login', views.handleLogin, name='handleLogin'),
