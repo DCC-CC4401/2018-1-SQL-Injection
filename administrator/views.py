@@ -47,7 +47,7 @@ def index(request):
 
 # this method handles only post requests
 # changes the 'state' of Reserves
-def postPending(request):
+def post_pending(request):
     if request.method != 'POST':
         return HttpResponseRedirect('/administrator')
 

@@ -32,7 +32,7 @@
     {# HEADER #}
     <header>
       <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="index">
+        <a class="navbar-brand" href="{% url 'home' %}">
           <img src="{% static "/logo.png" %}" width="30" height="30" alt="Logo del CEI">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,7 +41,7 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="index">
+              <a class="nav-link" href="{% url 'home' %}">
                 <span style="font-size: 15px; color: Dodgerblue;">
                   <i class="fas fa-home"></i> Home
                 </span>
