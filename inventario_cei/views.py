@@ -1,7 +1,9 @@
-from django.http import HttpResponse, JsonResponse
 from django.template import loader
-from datetime import datetime
+from django.http import HttpResponse,JsonResponse,HttpResponseRedirect
+from django.contrib.auth import authenticate, login, logout
 
+
+from datetime import datetime
 import datetime
 
 from inventario_cei.models import Object, Space
@@ -40,6 +42,40 @@ def spaces(request):
     return HttpResponse(template.render(context, request))
 
 
+# login
+def handleLogin(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('/userprofile')
+
+    context = {}
+    if request.method == 'GET':
+        template = loader.get_template('login.html')
+        return HttpResponse(template.render(context, request))
+
+    if request.method != 'POST':
+        return HttpResponseRedirect('/cei/login')
+
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        return HttpResponseRedirect('/userprofile')
+    else:
+        context = {'error': 'Credenciales Invalidas'}
+        template = loader.get_template('login.html')
+        return HttpResponse(template.render(context, request))
+        
+
+def handleLogout(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/userprofile')
+    
+    logout(request)
+    return HttpResponseRedirect('/cei/login')
+
+
+# TODO: delete this method for production
 # The next methods are created to test de data base
 def testdata(request):
     today = datetime.date.today()
