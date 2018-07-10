@@ -19,13 +19,13 @@
                         <div class="col-sm-1"></div>
                         <div class="col-sm-7">
                             <input placeholder="Ej: Parlante" name='search_terms' type="search"
-                                   class="form-control" style="width:100%">
+                                   class="shadow-sm form-control" style="width:100%">
                         </div>
                         <div class="col-sm-1">
                             <button type="submit" class="btn btn-primary">Buscar</button>
                         </div>
                         <div class="col-sm-2">
-                            <button type="button" onclick="activar_parametros()" class="btn btn-secondary" role="button"
+                            <button type="button" onclick="activar_parametros()" class="btn btn-light" role="button"
                                     aria-pressed="true">Búsqueda Avanzada
                             </button>
                         </div>
@@ -34,15 +34,16 @@
                          class="border p-3 shadow mb-4">
                         <div class="form-group">
                             <label for="exampleFormControlInput1">Id:</label>
-                            <input name= 'id' type="number" class="form-control" id="exampleFormControlInput1" placeholder="Ej: 42">
+                            <input name='id' type="number" class="form-control" id="exampleFormControlInput1"
+                                   placeholder="Ej: 42">
                         </div>
                         <div class="form-group">
                             <label for="exampleFormControlInput1">Fecha Inicial:</label>
-                            <input type="date" class="form-control" id="exampleFormControlInput1">
+                            <input name='ini' type="datetime-local" class="form-control" id="exampleFormControlInput1">
                         </div>
                         <div class="form-group">
                             <label for="exampleFormControlInput1">Fecha Final:</label>
-                            <input type="date" class="form-control" id="exampleFormControlInput1">
+                            <input name='fin' type="datetime-local" class="form-control" id="exampleFormControlInput1">
                         </div>
                         <div class="form-group">
                             <label for="exampleFormControlSelect1">Estado</label>
@@ -63,7 +64,10 @@
     <div class="container" style="margin-bottom: 7%; margin-left: 5%">
         <div style="float: left;">
             {% if made_search %}
-                <h3>Resultado de la busqueda: "{{ search_terms }}"</h3>
+                <h3>Resultado de la búsqueda
+                    {% if search_terms != '' %} "{{ search_terms }}".{% endif %}
+                    {% if item_id != '' %}  id = {{ item_id }}.{% endif %}
+                </h3>
             {% else %}
                 <h3>Todos los Items</h3>
             {% endif %}
